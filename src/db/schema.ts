@@ -1,7 +1,16 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { date, numeric, pgEnum, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import { CATEGORIES } from 'txcategorizer';
 
-export const todos = pgTable('todos', {
-  id: serial().primaryKey(),
-  title: text().notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-})
+export const categoryEnum = pgEnum('category', CATEGORIES);
+
+export const transactions = pgTable('transactions', {
+    id: serial().primaryKey(),
+    date: date(),
+    amount: numeric(),
+    merchant: text().notNull(),
+    counterparty: text(),
+    category: categoryEnum().notNull(),
+    type: text().notNull(),
+    currency: text(),
+    exchangeRate: numeric(),
+});
