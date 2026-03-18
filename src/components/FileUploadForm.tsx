@@ -32,7 +32,6 @@ export const FileUploadForm = () => {
 
     function handleSubmit({ value }: { value: { file: File; bank: Bank; userName: string } }) {
         uploadFile({ file: value.file, bank: value.bank, userName: value.userName });
-        console.log(value);
         toast.success('Transactions imported!');
     }
 
