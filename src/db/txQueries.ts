@@ -1,11 +1,11 @@
-import { and, asc, between, desc, eq, like } from 'drizzle-orm';
+import { and, asc, between, desc, inArray, like } from 'drizzle-orm';
 import { transactions } from './schema';
 import type { Category } from 'txcategorizer';
 import { db } from './index.ts';
 
 export type TransactionQuery = {
     // filtering
-    category?: Category;
+    category?: Category[];
     from?: string;
     to?: string;
     merchant?: string;
@@ -19,7 +19,7 @@ export type TransactionQuery = {
 export async function getTransactions(query: TransactionQuery = {}) {
     const conditions = [];
 
-    if (query.category) conditions.push(eq(transactions.category, query.category));
+    if (query.category?.length) conditions.push(inArray(transactions.category, query.category));
     if (query.from && query.to) conditions.push(between(transactions.date, query.from, query.to));
     if (query.merchant) conditions.push(like(transactions.merchant, `%${query.merchant}%`));
 

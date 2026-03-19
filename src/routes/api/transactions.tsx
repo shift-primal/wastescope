@@ -12,7 +12,7 @@ export const Route = createFileRoute('/api/transactions')({
                 const url = new URL(request.url);
 
                 const query = {
-                    category: (url.searchParams.get('category') as Category) ?? undefined,
+                    category: url.searchParams.getAll('category') as Category[],
                     merchant: url.searchParams.get('merchant') ?? undefined,
                     from: url.searchParams.get('from') ?? undefined,
                     to: url.searchParams.get('to') ?? undefined,
