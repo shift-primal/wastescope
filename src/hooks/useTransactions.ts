@@ -7,7 +7,9 @@ export const useTransactions = (query?: TransactionQuery) => {
     return useQuery({
         queryKey: ['transactions', query],
         queryFn: () =>
-            client.get<Transaction[]>('/api/transactions', { params: query }).then((r) => r.data),
+            client
+                .get<{ data: Transaction[]; total: number }>('/api/transactions', { params: query })
+                .then((r) => r.data),
         placeholderData: (prev) => prev,
     });
 };

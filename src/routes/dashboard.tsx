@@ -6,7 +6,6 @@ import type { Category } from 'txcategorizer';
 
 export const Route = createFileRoute('/dashboard')({
     validateSearch: (search) => {
-        console.log('search.category: ', search.category);
         return {
             category: (search.category as Category[]) ?? undefined,
             merchant: search.merchant as string | undefined,
@@ -22,17 +21,14 @@ export const Route = createFileRoute('/dashboard')({
 });
 
 export function DashboardPage() {
-    const navigate = Route.useNavigate();
     const search = Route.useSearch();
-    const { data: txs, isLoading: txsLoading } = useTransactions(search);
+    const { data: txResult, isLoading: txsLoading } = useTransactions(search);
 
-    if (txs === undefined) return <h1>loading</h1>;
-
-    console.log(search);
+    if (txResult === undefined) return <h1>loading</h1>;
 
     return (
         <div>
-            <Dashboard txs={txs} navigate={navigate} className={txsLoading ? 'opacity-50' : ''} />
+            <Dashboard txResult={txResult} className={txsLoading ? 'opacity-50' : ''} />
         </div>
     );
 }

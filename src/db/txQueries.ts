@@ -1,4 +1,4 @@
-import { and, asc, between, desc, inArray, like } from 'drizzle-orm';
+import { and, asc, between, count, desc, inArray, ilike } from 'drizzle-orm';
 import { transactions } from './schema';
 import type { Category } from 'txcategorizer';
 import { db } from './index.ts';
@@ -21,7 +21,7 @@ export async function getTransactions(query: TransactionQuery = {}) {
 
     if (query.category?.length) conditions.push(inArray(transactions.category, query.category));
     if (query.from && query.to) conditions.push(between(transactions.date, query.from, query.to));
-    if (query.merchant) conditions.push(like(transactions.merchant, `%${query.merchant}%`));
+    if (query.merchant) conditions.push(ilike(transactions.merchant, `%${query.merchant}%`));
 
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 25;
@@ -29,11 +29,18 @@ export async function getTransactions(query: TransactionQuery = {}) {
     const orderCol = query.sortBy ? transactions[query.sortBy] : transactions.date;
     const orderDir = query.sortDir === 'asc' ? asc(orderCol) : desc(orderCol);
 
-    return db
-        .select()
-        .from(transactions)
-        .where(and(...conditions))
-        .orderBy(orderDir)
-        .limit(pageSize)
-        .offset((page - 1) * pageSize);
+    const where = and(...conditions);
+
+    const [data, [{ total }]] = await Promise.all([
+        db
+            .select()
+            .from(transactions)
+            .where(where)
+            .orderBy(orderDir)
+            .limit(pageSize)
+            .offset((page - 1) * pageSize),
+        db.select({ total: count() }).from(transactions).where(where),
+    ]);
+
+    return { data, total };
 }

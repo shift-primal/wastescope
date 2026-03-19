@@ -8,17 +8,21 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useNavigate, useSearch } from '@tanstack/react-router';
+import { LayoutList } from 'lucide-react';
 
 import { CATEGORIES } from 'txcategorizer';
 
 export const CategoriesDropdown = () => {
-    const navigate = useNavigate();
     const { category: selectedCategories } = useSearch({ from: '/dashboard' });
+    const navigate = useNavigate();
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Kategorier</Button>
+                <Button variant="outline">
+                    <LayoutList className="inline-start" />
+                    <span>Kategorier</span>
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48">
                 <DropdownMenuGroup>
