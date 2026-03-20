@@ -1,4 +1,4 @@
-import type { TransactionQuery } from '#/db/txQueries';
+import type { TransactionQuery } from '#/types/transactions';
 import { client } from '#/services/apiclient';
 import { useQuery } from '@tanstack/react-query';
 import type { Transaction } from 'txcategorizer';

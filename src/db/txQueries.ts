@@ -1,20 +1,9 @@
 import { and, asc, between, count, desc, inArray, ilike } from 'drizzle-orm';
 import { transactions } from './schema';
-import type { Category } from 'txcategorizer';
 import { db } from './index.ts';
-
-export type TransactionQuery = {
-    // filtering
-    category?: Category[];
-    from?: string;
-    to?: string;
-    merchant?: string;
-    // sorting
-    sortBy?: 'date' | 'amount' | 'merchant' | 'category';
-    sortDir?: 'asc' | 'desc';
-    page?: number;
-    pageSize?: number;
-};
+export type { TransactionQuery } from '#/types/transactions';
+export { SORT_FIELDS } from '#/types/transactions';
+import type { TransactionQuery } from '#/types/transactions';
 
 export async function getTransactions(query: TransactionQuery = {}) {
     const conditions = [];

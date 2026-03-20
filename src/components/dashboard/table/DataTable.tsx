@@ -1,12 +1,21 @@
-import { Table, TableBody, TableCell, TableRow } from '#/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '#/components/ui/table';
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
+import { QueryControls } from '../querycontrols/QueryControls';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    total: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, total }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
@@ -14,8 +23,15 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div className="overflow-hidden rounded-md border w-fit">
+        <div className="overflow-hidden rounded-md border flex flex-col">
             <Table>
+                <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                        <TableHead colSpan={columns.length}>
+                            <QueryControls total={total} />
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
                 <TableBody>
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (

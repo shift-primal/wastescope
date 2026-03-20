@@ -1,5 +1,5 @@
 import { Dashboard } from '#/components/Dashboard';
-import type { TransactionQuery } from '#/db/txQueries';
+import type { TransactionQuery } from '#/types/transactions';
 import { useTransactions } from '#/hooks/useTransactions';
 import { createFileRoute } from '@tanstack/react-router';
 import type { Category } from 'txcategorizer';

@@ -19,15 +19,12 @@ export const MerchantSearch = ({ total }: { total: number }) => {
     );
 
     return (
-        <InputGroup className="max-w-xs">
-            <InputGroupInput
-                placeholder="Search..."
-                onChange={(e) => handleSearch(e.target.value)}
-            />
+        <InputGroup className="flex-1">
+            <InputGroupInput placeholder="Søk..." onChange={(e) => handleSearch(e.target.value)} />
             <InputGroupAddon>
                 <Search />
             </InputGroupAddon>
-            <InputGroupAddon align="inline-end">{total} results</InputGroupAddon>
+            <InputGroupAddon align="inline-end">{total} resultater</InputGroupAddon>
         </InputGroup>
     );
 };

@@ -19,8 +19,8 @@ export const CategoriesDropdown = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                    <LayoutList className="inline-start" />
+                <Button variant="outline" className="font-normal">
+                    <LayoutList className="inline-start size-3.5" />
                     <span>Kategorier</span>
                 </Button>
             </DropdownMenuTrigger>

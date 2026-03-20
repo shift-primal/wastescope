@@ -1,62 +1,95 @@
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '#/lib/utils';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
-import { type DateRange } from 'react-day-picker';
+import { format as fmtDate, endOfMonth, startOfMonth } from 'date-fns';
+import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
 
 export const DatePicker = () => {
-    const { from: fromDate, to: toDate } = useSearch({ from: '/dashboard' });
+    const { from: fromStr, to: toStr } = useSearch({ from: '/dashboard' });
     const navigate = useNavigate();
 
-    const date: DateRange = { from: new Date(fromDate), to: new Date(toDate) };
+    const from = new Date(fromStr);
+    const to = new Date(toStr);
 
-    const handleDateChange = ({ from, to }: { from: Date; to: Date }) =>
-        navigate({
-            to: '/dashboard',
-            search: (prev: any) => ({
-                ...prev,
-                from: from,
-                to: to,
-            }),
-            resetScroll: false,
-        });
+    const [year, setYear] = useState(from.getFullYear());
+
+    const handleSelect = (monthIndex: number) => {
+        const selected = new Date(year, monthIndex, 1);
+        const fromMonth = startOfMonth(from);
+        const toMonth = startOfMonth(to);
+
+        if (selected < fromMonth || (selected >= fromMonth && selected <= toMonth)) {
+            navigate({
+                to: '/dashboard',
+                search: (prev: any) => ({
+                    ...prev,
+                    from: fmtDate(startOfMonth(selected), 'yyyy-MM-dd'),
+                    to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
+                }),
+                resetScroll: false,
+            });
+        } else {
+            navigate({
+                to: '/dashboard',
+                search: (prev: any) => ({
+                    ...prev,
+                    to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
+                }),
+                resetScroll: false,
+            });
+        }
+    };
+
+    const isStart = (monthIndex: number) =>
+        year === from.getFullYear() && monthIndex === from.getMonth();
+
+    const isEnd = (monthIndex: number) => year === to.getFullYear() && monthIndex === to.getMonth();
+
+    const isInRange = (monthIndex: number) => {
+        const d = new Date(year, monthIndex, 1);
+        return d > startOfMonth(from) && d < startOfMonth(to);
+    };
 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    id="date-picker-range"
-                    className="justify-start px-2.5 font-normal"
-                >
-                    <CalendarIcon />
-                    {date.from ? (
-                        date.to ? (
-                            <span>
-                                <span>{format(date.from, 'LLL, y')}</span> -
-                                <span>{format(date.to, 'LLL, y')}</span>
-                            </span>
-                        ) : (
-                            format(date.from, 'LLL, y')
-                        )
-                    ) : (
-                        <span>Pick a date</span>
-                    )}
+                <Button variant="outline" className="justify-start px-2.5 font-normal w-46">
+                    <CalendarIcon className="size-3.5" />
+                    <span className="text-center w-full">
+                        {fmtDate(from, 'LLL y')} – {fmtDate(to, 'LLL y')}
+                    </span>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                    mode="range"
-                    defaultMonth={date?.from}
-                    selected={date}
-                    onSelect={(range: DateRange | undefined) => {
-                        if (range?.from && range?.to)
-                            handleDateChange({ from: range.from, to: range.to });
-                    }}
-                    numberOfMonths={2}
-                />
+            <PopoverContent className="w-60 p-3" align="start">
+                <div className="flex items-center justify-between mb-3">
+                    <Button variant="ghost" size="icon" onClick={() => setYear((y) => y - 1)}>
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium">{year}</span>
+                    <Button variant="ghost" size="icon" onClick={() => setYear((y) => y + 1)}>
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                </div>
+                <div className="grid grid-cols-3 gap-1">
+                    {MONTHS.map((name, i) => (
+                        <button
+                            key={name}
+                            onClick={() => handleSelect(i)}
+                            className={cn(
+                                'rounded-md py-1.5 text-sm transition-colors hover:bg-accent cursor-pointer',
+                                isInRange(i) && 'bg-accent',
+                                (isStart(i) || isEnd(i)) &&
+                                    'bg-primary text-primary-foreground hover:bg-primary',
+                            )}
+                        >
+                            {name}
+                        </button>
+                    ))}
+                </div>
             </PopoverContent>
         </Popover>
     );

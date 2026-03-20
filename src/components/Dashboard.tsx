@@ -1,7 +1,6 @@
 import type { Transaction } from 'txcategorizer';
 import { columns } from './dashboard/table/Columns';
 import { DataTable } from './dashboard/table/DataTable';
-import { QueryControls } from './dashboard/querycontrols/QueryControls';
 import { cn } from '#/lib/utils';
 
 export function Dashboard({
@@ -15,8 +14,7 @@ export function Dashboard({
 
     return (
         <div className={cn('container mx-auto py-10', className)}>
-            <QueryControls total={total} />
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} total={total} />
         </div>
     );
 }
