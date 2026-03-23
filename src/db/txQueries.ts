@@ -9,7 +9,12 @@ export async function getTransactions(query: TransactionQuery = {}) {
     const conditions = [];
 
     if (query.category?.length) conditions.push(inArray(transactions.category, query.category));
+
+    if (query.minAmt && query.maxAmt)
+        conditions.push(between(transactions.amount, query.minAmt, query.maxAmt));
+
     if (query.from && query.to) conditions.push(between(transactions.date, query.from, query.to));
+
     if (query.merchant) conditions.push(ilike(transactions.merchant, `%${query.merchant}%`));
 
     const page = query.page ?? 1;
@@ -20,7 +25,7 @@ export async function getTransactions(query: TransactionQuery = {}) {
 
     const where = and(...conditions);
 
-    const [data, [{ total }]] = await Promise.all([
+    const [data, [{ totalResults }]] = await Promise.all([
         db
             .select()
             .from(transactions)
@@ -28,8 +33,8 @@ export async function getTransactions(query: TransactionQuery = {}) {
             .orderBy(orderDir)
             .limit(pageSize)
             .offset((page - 1) * pageSize),
-        db.select({ total: count() }).from(transactions).where(where),
+        db.select({ totalResults: count() }).from(transactions).where(where),
     ]);
 
-    return { data, total };
+    return { data, totalResults };
 }

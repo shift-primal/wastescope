@@ -12,10 +12,14 @@ import { QueryControls } from '../querycontrols/QueryControls';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    total: number;
+    totalResults: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data, total }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+    columns,
+    data,
+    totalResults,
+}: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
@@ -28,7 +32,7 @@ export function DataTable<TData, TValue>({ columns, data, total }: DataTableProp
                 <TableHeader>
                     <TableRow className="hover:bg-transparent">
                         <TableHead colSpan={columns.length}>
-                            <QueryControls total={total} />
+                            <QueryControls totalResults={totalResults} />
                         </TableHead>
                     </TableRow>
                 </TableHeader>

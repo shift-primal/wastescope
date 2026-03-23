@@ -5,7 +5,7 @@ import { transactions } from '#/db/schema';
 import { sql } from 'drizzle-orm';
 import { getTransactions, type TransactionQuery } from '#/db/txQueries';
 
-export const Route = createFileRoute('/api/transactions')({
+export const Route = createFileRoute('/api/transactions/')({
     server: {
         handlers: {
             GET: async ({ request }) => {
@@ -14,6 +14,8 @@ export const Route = createFileRoute('/api/transactions')({
                 const query = {
                     category: url.searchParams.getAll('category') as Category[],
                     merchant: url.searchParams.get('merchant') ?? undefined,
+                    minAmt: url.searchParams.get('minAmt') ?? undefined,
+                    maxAmt: url.searchParams.get('maxAmt') ?? undefined,
                     from: url.searchParams.get('from') ?? undefined,
                     to: url.searchParams.get('to') ?? undefined,
                     sortBy:

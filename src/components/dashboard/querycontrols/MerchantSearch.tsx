@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { Search } from 'lucide-react';
 
-export const MerchantSearch = ({ total }: { total: number }) => {
+export const MerchantSearch = ({ totalResults }: { totalResults: number }) => {
     const navigate = useNavigate();
     const handleSearch = useDebouncedCallback(
         (value: string) =>
@@ -24,7 +24,7 @@ export const MerchantSearch = ({ total }: { total: number }) => {
             <InputGroupAddon>
                 <Search />
             </InputGroupAddon>
-            <InputGroupAddon align="inline-end">{total} resultater</InputGroupAddon>
+            <InputGroupAddon align="inline-end">{totalResults} resultater</InputGroupAddon>
         </InputGroup>
     );
 };

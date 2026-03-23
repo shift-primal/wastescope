@@ -7,14 +7,14 @@ export function Dashboard({
     txResult,
     className,
 }: {
-    txResult: { data: Transaction[]; total: number };
+    txResult: { data: Transaction[]; totalResults: number };
     className: string;
 }) {
-    const { data, total } = txResult;
+    const { data, totalResults } = txResult;
 
     return (
         <div className={cn('container mx-auto py-10', className)}>
-            <DataTable columns={columns} data={data} total={total} />
+            <DataTable columns={columns} data={data} totalResults={totalResults} />
         </div>
     );
 }

@@ -15,7 +15,7 @@ import * as z from 'zod';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { useRef } from 'react';
-import { InputFile } from './ui/custom/inputFile';
+import { InputFile } from './ui/custom/InputFile';
 
 const banks = ['dnb', 'valle'] as const;
 
