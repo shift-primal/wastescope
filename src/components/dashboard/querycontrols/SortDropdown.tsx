@@ -15,9 +15,9 @@ import { ArrowUpDown, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 export const SortDropdown = () => {
-    const [rotation, setRotation] = useState(0);
-
     const { sortBy, sortDir } = useSearch({ from: '/dashboard' });
+
+    const [rotation, setRotation] = useState(sortDir === 'desc' ? 0 : 180);
     const navigate = useNavigate();
 
     const handleSortField = (value: string) => {

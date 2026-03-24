@@ -15,7 +15,7 @@ export const MerchantSearch = ({ totalResults }: { totalResults: number }) => {
                 }),
                 resetScroll: false,
             }),
-        100,
+        300,
     );
 
     return (

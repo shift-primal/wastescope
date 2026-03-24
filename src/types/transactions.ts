@@ -3,8 +3,8 @@ import type { Category } from 'txcategorizer';
 export type TransactionQuery = {
     // filtering
     category?: Category[];
-    minAmt?: string;
-    maxAmt?: string;
+    minAmt?: number;
+    maxAmt?: number;
     from?: string;
     to?: string;
     merchant?: string;

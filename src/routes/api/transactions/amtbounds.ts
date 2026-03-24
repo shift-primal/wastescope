@@ -14,7 +14,10 @@ export const Route = createFileRoute('/api/transactions/amtbounds')({
                     })
                     .from(transactions);
 
-                return Response.json(bounds);
+                return Response.json({
+                    minBound: parseFloat(bounds[0].minBound ?? '0'),
+                    maxBound: parseFloat(bounds[0].maxBound ?? '0'),
+                });
             },
         },
     },

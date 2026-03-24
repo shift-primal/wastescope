@@ -6,12 +6,10 @@ export const useAmtBounds = () => {
         queryKey: ['transactions', 'range'],
         queryFn: () =>
             client
-                .get<
-                    {
-                        minBound: string | null;
-                        maxBound: string | null;
-                    }[]
-                >('/api/transactions/amtbounds')
-                .then((r) => r.data[0]),
+                .get<{
+                    minBound: number | 0;
+                    maxBound: number | 0;
+                }>('/api/transactions/amtbounds')
+                .then((r) => r.data ?? { minBound: 0, maxBound: 0 }),
     });
 };

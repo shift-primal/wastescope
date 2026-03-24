@@ -8,8 +8,8 @@ export const Route = createFileRoute('/dashboard')({
     validateSearch: (search) => {
         return {
             category: (search.category as Category[]) ?? undefined,
-            minAmt: (search.minAmt as string | undefined) ?? '0',
-            maxAmt: (search.maxAmt as string | undefined) ?? '100000',
+            minAmt: search.minAmt as number | undefined,
+            maxAmt: search.maxAmt as number | undefined,
             merchant: search.merchant as string | undefined,
             from: (search.from as string) ?? '2025-01-01',
             to: (search.to as string) ?? new Date().toISOString().split('T')[0],
