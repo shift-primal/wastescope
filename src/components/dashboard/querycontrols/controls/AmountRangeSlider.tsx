@@ -1,6 +1,6 @@
 import { Slider } from '#/components/ui/slider';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export const AmountRangeSlider = ({
@@ -14,6 +14,7 @@ export const AmountRangeSlider = ({
 
     const [localValue, setLocalValue] = useState([minAmt || minBound, maxAmt || maxBound]);
     const [activeThumb, setActiveThumb] = useState<number | null>(null);
+    const wasDragging = useRef(false);
 
     const handleChange = useDebouncedCallback((values: number[]) => {
         navigate({
@@ -31,9 +32,13 @@ export const AmountRangeSlider = ({
             step={100}
             minStepsBetweenThumbs={1}
             activeThumb={activeThumb}
+            instant={wasDragging.current}
             onValueChange={(values) => {
-                const changedIndex = values.findIndex((v, i) => v !== localValue[i]);
-                if (changedIndex !== -1) setActiveThumb(changedIndex);
+                const newIndex = values.findIndex((v, i) => v !== localValue[i]);
+                if (newIndex !== -1) {
+                    wasDragging.current = activeThumb !== null;
+                    setActiveThumb(newIndex);
+                }
                 setLocalValue(values);
                 handleChange(values);
             }}

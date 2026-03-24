@@ -1,10 +1,10 @@
 import { useAmtBounds } from '#/hooks/useAmtBounds';
-import { AmountRangeSlider } from './AmountRangeSlider';
-import { CategoriesDropdown } from './CategoriesDropdown';
-import { ClearFiltersButton } from './ClearFiltersButton';
-import { DatePicker } from './DatePicker';
-import { MerchantSearch } from './MerchantSearch';
-import { SortDropdown } from './SortDropdown';
+import { AmountRangeSlider } from './controls/AmountRangeSlider';
+import { CategoriesDropdown } from './controls/CategoriesDropdown';
+import { ClearFiltersButton } from './controls/ClearFiltersButton';
+import { DatePicker } from './controls/DatePicker';
+import { MerchantSearch } from './controls/MerchantSearch';
+import { SortDropdown } from './controls/SortDropdown';
 
 export const QueryControls = ({ totalResults }: { totalResults: number }) => {
     const { data: amtBounds } = useAmtBounds();

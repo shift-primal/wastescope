@@ -2,7 +2,35 @@ import * as React from 'react';
 import { Slider as SliderPrimitive } from 'radix-ui';
 
 import { cn } from '#/lib/utils';
-import { SliderBadge } from '#/components/ui/custom/SliderBadge';
+import { Badge } from '#/components/ui/badge';
+
+const ThumbWithBadge = ({
+    value,
+    isActive,
+    isDragging,
+    instant,
+}: {
+    value: number;
+    isActive: boolean;
+    isDragging: boolean;
+    instant: boolean;
+}) => (
+    <SliderPrimitive.Thumb className="group block size-4 shrink-0 rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 relative">
+        <Badge
+            className={cn(
+                'origin-top absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none',
+                isActive && 'scale-100',
+                isActive && !instant && 'transition-transform duration-200 ease-in-out',
+                !isActive && isDragging && 'scale-0',
+                !isActive &&
+                    !isDragging &&
+                    'scale-0 group-hover:scale-100 group-hover:transition-transform group-hover:duration-200 group-hover:ease-in-out',
+            )}
+        >
+            {value}
+        </Badge>
+    </SliderPrimitive.Thumb>
+);
 
 function Slider({
     className,
@@ -12,10 +40,12 @@ function Slider({
     max = 100,
     customThumb = false,
     activeThumb = null,
+    instant = false,
     ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
     customThumb?: boolean;
     activeThumb?: number | null;
+    instant?: boolean;
 }) {
     const _values = React.useMemo(
         () =>
@@ -51,13 +81,13 @@ function Slider({
             </SliderPrimitive.Track>
             {_values.map((val, index) =>
                 customThumb ? (
-                    <SliderPrimitive.Thumb key={index} asChild>
-                        <SliderBadge
-                            value={val}
-                            isActive={activeThumb === index}
-                            isDragging={activeThumb !== null}
-                        />
-                    </SliderPrimitive.Thumb>
+                    <ThumbWithBadge
+                        key={index}
+                        value={val}
+                        isActive={activeThumb === index}
+                        isDragging={activeThumb !== null}
+                        instant={instant}
+                    />
                 ) : (
                     <SliderPrimitive.Thumb
                         data-slot="slider-thumb"
