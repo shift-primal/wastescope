@@ -1,4 +1,4 @@
-import { and, asc, between, count, desc, inArray, ilike, min, max } from 'drizzle-orm';
+import { and, asc, between, count, desc, inArray, ilike, min, max, or } from 'drizzle-orm';
 import { transactions } from './schema';
 import { db } from './index.ts';
 export type { TransactionQuery } from '#/types/transactions';
@@ -19,7 +19,13 @@ export async function getTransactions(query: TransactionQuery = {}) {
 
     if (query.from && query.to) conditions.push(between(transactions.date, query.from, query.to));
 
-    if (query.merchant) conditions.push(ilike(transactions.merchant, `%${query.merchant}%`));
+    if (query.merchant)
+        conditions.push(
+            or(
+                ilike(transactions.merchant, `%${query.merchant}%`),
+                ilike(transactions.counterparty, `%${query.merchant}%`),
+            ),
+        );
 
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 25;

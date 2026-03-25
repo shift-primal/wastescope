@@ -14,13 +14,13 @@ export const QueryControls = ({ totalResults }: { totalResults: number }) => {
 
     return (
         <div id="query-controls-container" className="flex gap-x-4 py-2 min-w-max">
+            {allUsers && <UserDropdown allUsers={allUsers} />}
             <CategoriesDropdown />
             <MerchantSearch totalResults={totalResults} />
             <DatePicker />
             <SortDropdown />
             <ClearFiltersButton />
             {amtBounds && <AmountRangeSlider amtBounds={amtBounds} />}
-            {allUsers && <UserDropdown allUsers={allUsers} />}
         </div>
     );
 };

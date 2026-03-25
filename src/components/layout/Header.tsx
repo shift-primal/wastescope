@@ -10,7 +10,9 @@ export default function Header() {
 
             <div className="flex gap-x-4 items-center">
                 <Link to="/import">Import</Link>
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard" search={{} as any}>
+                    Dashboard
+                </Link>
                 <ThemeToggle />
             </div>
         </header>

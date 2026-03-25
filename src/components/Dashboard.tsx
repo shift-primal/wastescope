@@ -13,7 +13,7 @@ export function Dashboard({
     const { data, totalResults } = txResult;
 
     return (
-        <div className={cn('container mx-auto py-10', className)}>
+        <div className={cn('p-6', className)}>
             <DataTable columns={columns} data={data} totalResults={totalResults} />
         </div>
     );

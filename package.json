@@ -17,7 +17,8 @@
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
         "db:pull": "drizzle-kit pull",
-        "db:studio": "drizzle-kit studio"
+        "db:studio": "drizzle-kit studio",
+        "refresh-txcat": "bash scripts/refresh-txcat.sh"
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.18",
@@ -50,7 +51,7 @@
         "tailwind-merge": "^3.0.2",
         "tailwindcss": "^4.1.18",
         "tw-animate-css": "^1.3.6",
-        "txcategorizer": "^0.1.1",
+        "txcategorizer": "link:../txcategorizer",
         "use-debounce": "^10.1.0",
         "zod": "^4.3.6"
     },
