@@ -13,4 +13,5 @@ export const transactions = pgTable('transactions', {
     type: text().notNull(),
     currency: text(),
     exchangeRate: numeric(),
+    user: text().notNull(),
 });

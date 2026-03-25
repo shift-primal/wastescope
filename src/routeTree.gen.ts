@@ -13,6 +13,7 @@ import { Route as ImportRouteImport } from './routes/import'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTransactionsIndexRouteImport } from './routes/api/transactions/index'
+import { Route as ApiTransactionsUsersRouteImport } from './routes/api/transactions/users'
 import { Route as ApiTransactionsAmtboundsRouteImport } from './routes/api/transactions/amtbounds'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -36,6 +37,11 @@ const ApiTransactionsIndexRoute = ApiTransactionsIndexRouteImport.update({
   path: '/api/transactions/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTransactionsUsersRoute = ApiTransactionsUsersRouteImport.update({
+  id: '/api/transactions/users',
+  path: '/api/transactions/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTransactionsAmtboundsRoute =
   ApiTransactionsAmtboundsRouteImport.update({
     id: '/api/transactions/amtbounds',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
+  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions/': typeof ApiTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
+  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions': typeof ApiTransactionsIndexRoute
 }
 export interface FileRoutesById {
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
+  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions/': typeof ApiTransactionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
+    | '/api/transactions/users'
     | '/api/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
+    | '/api/transactions/users'
     | '/api/transactions'
   id:
     | '__root__'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
+    | '/api/transactions/users'
     | '/api/transactions/'
   fileRoutesById: FileRoutesById
 }
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   ImportRoute: typeof ImportRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTransactionsAmtboundsRoute: typeof ApiTransactionsAmtboundsRoute
+  ApiTransactionsUsersRoute: typeof ApiTransactionsUsersRoute
   ApiTransactionsIndexRoute: typeof ApiTransactionsIndexRoute
 }
 
@@ -139,6 +152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTransactionsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/transactions/users': {
+      id: '/api/transactions/users'
+      path: '/api/transactions/users'
+      fullPath: '/api/transactions/users'
+      preLoaderRoute: typeof ApiTransactionsUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/transactions/amtbounds': {
       id: '/api/transactions/amtbounds'
       path: '/api/transactions/amtbounds'
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ImportRoute: ImportRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTransactionsAmtboundsRoute: ApiTransactionsAmtboundsRoute,
+  ApiTransactionsUsersRoute: ApiTransactionsUsersRoute,
   ApiTransactionsIndexRoute: ApiTransactionsIndexRoute,
 }
 export const routeTree = rootRouteImport

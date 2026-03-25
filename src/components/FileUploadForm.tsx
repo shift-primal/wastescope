@@ -22,7 +22,7 @@ const banks = ['dnb', 'valle'] as const;
 const formSchema = z.object({
     file: z.instanceof(File, { message: 'Velg en fil' }),
     bank: z.enum(banks),
-    userName: z.string().min(3, 'Minst 3 karakterer').max(32, 'Max 32 karakterer'),
+    user: z.string().min(3, 'Minst 3 karakterer').max(32, 'Max 32 karakterer'),
 });
 
 export const FileUploadForm = () => {
@@ -30,8 +30,8 @@ export const FileUploadForm = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    function handleSubmit({ value }: { value: { file: File; bank: Bank; userName: string } }) {
-        uploadFile({ file: value.file, bank: value.bank, userName: value.userName });
+    function handleSubmit({ value }: { value: { file: File; bank: Bank; user: string } }) {
+        uploadFile({ file: value.file, bank: value.bank, user: value.user });
         toast.success('Transactions imported!');
     }
 
@@ -39,7 +39,7 @@ export const FileUploadForm = () => {
         defaultValues: {
             file: undefined as unknown as File,
             bank: '' as Bank,
-            userName: '',
+            user: '',
         },
         validators: {
             onBlur: formSchema,
@@ -126,7 +126,7 @@ export const FileUploadForm = () => {
                             }}
                         />
                         <form.Field
-                            name="userName"
+                            name="user"
                             children={(field) => {
                                 const isInvalid =
                                     field.state.meta.isTouched && !field.state.meta.isValid;

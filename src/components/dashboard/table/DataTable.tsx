@@ -27,7 +27,7 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <div className="overflow-hidden rounded-md border flex flex-col">
+        <div className="overflow-hidden rounded-md border flex flex-col w-fit min-w-150">
             <Table>
                 <TableHeader>
                     <TableRow className="hover:bg-transparent">

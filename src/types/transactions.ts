@@ -2,6 +2,7 @@ import type { Category } from 'txcategorizer';
 
 export type TransactionQuery = {
     // filtering
+    user?: string[];
     category?: Category[];
     minAmt?: number;
     maxAmt?: number;

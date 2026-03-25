@@ -72,15 +72,31 @@ export const columns: ColumnDef<Transaction>[] = [
         accessorKey: 'merchant',
         header: () => null,
         size: 40,
+        cell: ({ row }) => {
+            const tx = row.original as Transaction & { user: string };
+            return (
+                <div className="flex flex-col">
+                    <span>{row.getValue('merchant')}</span>
+                    <span className="text-xs text-muted-foreground">
+                        {tx.counterparty ? tx.counterparty : tx.type}
+                    </span>
+                </div>
+            );
+        },
+    },
+
+    {
+        accessorKey: 'user',
+        header: () => null,
         cell: ({ row }) => (
-            <div className="flex flex-col">
-                <span>{row.getValue('merchant')}</span>
-                <span className="text-xs text-muted-foreground">
-                    {row.original.counterparty ? row.original.counterparty : row.original.type}
-                </span>
+            <div className="flex gap-1 mt-0.5">
+                <Badge variant="outline" className="text-[0.6rem] px-1 py-0 h-4">
+                    {row.getValue('user')}
+                </Badge>
             </div>
         ),
     },
+
     {
         accessorKey: 'date',
         header: () => null,
@@ -102,7 +118,7 @@ export const columns: ColumnDef<Transaction>[] = [
         accessorKey: 'amount',
         header: () => null,
         cell: ({ row }) => {
-            const ogRow = row.original as any;
+            const tx = row.original as Transaction & { currency: string; exchangeRate: string };
             const amt = row.getValue('amount') as number;
             return (
                 <div className="flex flex-col text-right mr-4">
@@ -110,9 +126,9 @@ export const columns: ColumnDef<Transaction>[] = [
                         {amt > 0 ? '+' : ''}
                         {amt} kr
                     </span>
-                    {ogRow.currency ? (
+                    {tx.currency ? (
                         <span className="text-xs text-muted-foreground">
-                            {ogRow.currency}, {parseFloat(ogRow.exchangeRate).toFixed(2)}
+                            {tx.currency}, {parseFloat(tx.exchangeRate).toFixed(2)}
                         </span>
                     ) : null}
                 </div>

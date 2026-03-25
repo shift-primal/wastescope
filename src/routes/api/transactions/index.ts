@@ -12,10 +12,15 @@ export const Route = createFileRoute('/api/transactions/')({
                 const url = new URL(request.url);
 
                 const query = {
+                    user: url.searchParams.getAll('user') as string[],
                     category: url.searchParams.getAll('category') as Category[],
                     merchant: url.searchParams.get('merchant') ?? undefined,
-                    minAmt: url.searchParams.get('minAmt') ?? undefined,
-                    maxAmt: url.searchParams.get('maxAmt') ?? undefined,
+                    minAmt: url.searchParams.get('minAmt')
+                        ? Number(url.searchParams.get('minAmt'))
+                        : undefined,
+                    maxAmt: url.searchParams.get('maxAmt')
+                        ? Number(url.searchParams.get('maxAmt'))
+                        : undefined,
                     from: url.searchParams.get('from') ?? undefined,
                     to: url.searchParams.get('to') ?? undefined,
                     sortBy:
@@ -43,6 +48,8 @@ export const Route = createFileRoute('/api/transactions/')({
 
                 const bank = formData.get('bank') as Bank;
 
+                const user = formData.get('user') as string;
+
                 const results = processTransactions(buffer, bank);
 
                 await db.insert(transactions).values(
@@ -55,6 +62,7 @@ export const Route = createFileRoute('/api/transactions/')({
                         type: t.type ?? 'Annet',
                         currency: t.valuta?.currency,
                         exchangeRate: t.valuta?.exchangeRate?.toString(),
+                        user: user,
                     })),
                 );
 

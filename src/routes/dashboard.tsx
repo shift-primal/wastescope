@@ -7,6 +7,7 @@ import type { Category } from 'txcategorizer';
 export const Route = createFileRoute('/dashboard')({
     validateSearch: (search) => {
         return {
+            user: (search.user as string[]) ?? undefined,
             category: (search.category as Category[]) ?? undefined,
             minAmt: search.minAmt as number | undefined,
             maxAmt: search.maxAmt as number | undefined,
