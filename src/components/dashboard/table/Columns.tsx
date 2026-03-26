@@ -22,6 +22,7 @@ import {
     ShoppingBasket,
     Sparkles,
     TrendingUp,
+    User,
     Utensils,
     type LucideIcon,
 } from 'lucide-react';
@@ -56,7 +57,6 @@ export const columns: ColumnDef<Transaction>[] = [
     {
         accessorKey: 'category',
         header: () => null,
-        size: 50,
         cell: ({ row }) => {
             const category = row.getValue('category') as Category;
             const Icon = categoryIcons[category];
@@ -74,7 +74,6 @@ export const columns: ColumnDef<Transaction>[] = [
     {
         accessorKey: 'merchant',
         header: () => null,
-        size: 40,
         cell: ({ row }) => {
             const tx = row.original as Transaction & { user: string };
             return (
@@ -89,21 +88,8 @@ export const columns: ColumnDef<Transaction>[] = [
     },
 
     {
-        accessorKey: 'user',
-        header: () => null,
-        cell: ({ row }) => (
-            <div className="flex gap-1 mt-0.5">
-                <Badge variant="outline" className="text-[0.6rem] px-1 py-0 h-4">
-                    {row.getValue('user')}
-                </Badge>
-            </div>
-        ),
-    },
-
-    {
         accessorKey: 'date',
         header: () => null,
-        size: 100,
         cell: ({ row }) => {
             const date = Date.parse(row.getValue('date'));
             const formattedDate = fmtDate(date, 'd. LLL');
@@ -135,5 +121,19 @@ export const columns: ColumnDef<Transaction>[] = [
                 </div>
             );
         },
+    },
+
+    {
+        accessorKey: 'user',
+        header: () => null,
+        size: 80,
+        cell: ({ row }) => (
+            <div className="flex flex-col items-center justify-center gap-1">
+                <User size={14} />
+                <Badge variant="outline" className="text-[0.7rem] px-1 py-0 h-4 bg-pink-900">
+                    {row.getValue('user')}
+                </Badge>
+            </div>
+        ),
     },
 ];

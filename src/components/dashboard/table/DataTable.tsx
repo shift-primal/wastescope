@@ -63,8 +63,8 @@ export function DataTable<TData, TValue>({
     }
 
     return (
-        <div className="overflow-hidden rounded-md border flex flex-col w-fit min-w-150 mx-auto">
-            <Table>
+        <div className="overflow-hidden rounded-md border flex flex-col w-fit mx-auto">
+            <Table className="[&_tbody_tr]:grid [&_tbody_tr]:grid-cols-[4rem_1fr_auto_auto_auto] [&_tbody_tr]:items-center">
                 <TableHeader>
                     <TableRow className="hover:bg-transparent">
                         <TableHead colSpan={columns.length}>

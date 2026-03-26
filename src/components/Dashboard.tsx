@@ -13,17 +13,17 @@ export function Dashboard({
 }) {
     const { data, totalResults, totalAmount } = txResult;
 
-    console.log(totalAmount);
-
     return (
-        <div className={cn('p-6 flex flex-col items-center gap-y-4', className)}>
-            <DataTable
-                columns={columns}
-                data={data}
-                totalResults={totalResults}
-                totalAmount={totalAmount}
-            />
-            <PageControls />
+        <div>
+            <div className={cn('p-6 flex flex-col items-center gap-y-4', className)}>
+                <DataTable
+                    columns={columns}
+                    data={data}
+                    totalResults={totalResults}
+                    totalAmount={totalAmount}
+                />
+                <PageControls />
+            </div>
         </div>
     );
 }
