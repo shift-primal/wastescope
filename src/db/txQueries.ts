@@ -1,4 +1,4 @@
-import { and, asc, between, count, desc, inArray, ilike, min, max, or } from 'drizzle-orm';
+import { and, asc, between, count, desc, inArray, ilike, min, max, or, sum } from 'drizzle-orm';
 import { transactions } from './schema';
 import { db } from './index.ts';
 export type { TransactionQuery } from '#/types/transactions';
@@ -35,7 +35,7 @@ export async function getTransactions(query: TransactionQuery = {}) {
 
     const where = and(...conditions);
 
-    const [data, [{ totalResults }]] = await Promise.all([
+    const [data, [{ totalResults }], [{ totalAmount }]] = await Promise.all([
         db
             .select()
             .from(transactions)
@@ -44,9 +44,13 @@ export async function getTransactions(query: TransactionQuery = {}) {
             .limit(pageSize)
             .offset((page - 1) * pageSize),
         db.select({ totalResults: count() }).from(transactions).where(where),
+        db
+            .select({ totalAmount: sum(transactions.amount) })
+            .from(transactions)
+            .where(where),
     ]);
 
-    return { data, totalResults };
+    return { data, totalResults, totalAmount: parseFloat(totalAmount ?? '0') };
 }
 
 export async function getAmtBounds() {

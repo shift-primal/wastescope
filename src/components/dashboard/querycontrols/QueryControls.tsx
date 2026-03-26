@@ -1,5 +1,6 @@
 import { useAmtBounds } from '#/hooks/useAmtBounds';
 import { useUsers } from '#/hooks/useUsers';
+import { useSearch } from '@tanstack/react-router';
 import { AmountRangeSlider } from './controls/AmountRangeSlider';
 import { CategoriesDropdown } from './controls/CategoriesDropdown';
 import { ClearFiltersButton } from './controls/ClearFiltersButton';
@@ -9,6 +10,7 @@ import { SortDropdown } from './controls/SortDropdown';
 import { UserDropdown } from './controls/UserDropdown';
 
 export const QueryControls = ({ totalResults }: { totalResults: number }) => {
+    const { minAmt, maxAmt, merchant } = useSearch({ from: '/dashboard' });
     const { data: amtBounds } = useAmtBounds();
     const { data: allUsers } = useUsers();
 
@@ -16,11 +18,13 @@ export const QueryControls = ({ totalResults }: { totalResults: number }) => {
         <div id="query-controls-container" className="flex gap-x-4 py-2 min-w-max">
             {allUsers && <UserDropdown allUsers={allUsers} />}
             <CategoriesDropdown />
-            <MerchantSearch totalResults={totalResults} />
+            <MerchantSearch key={merchant ?? ''} totalResults={totalResults} />
             <DatePicker />
             <SortDropdown />
             <ClearFiltersButton />
-            {amtBounds && <AmountRangeSlider amtBounds={amtBounds} />}
+            {amtBounds && (
+                <AmountRangeSlider key={`${minAmt ?? ''}-${maxAmt ?? ''}`} amtBounds={amtBounds} />
+            )}
         </div>
     );
 };

@@ -26,6 +26,7 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import { Badge } from '#/components/ui/badge';
+import { fmtAmt, getAmtCn } from '#/lib/tableUtils';
 
 const categoryIcons: Record<Category, LucideIcon> = {
     'Dagligvare': ShoppingBasket,
@@ -121,13 +122,11 @@ export const columns: ColumnDef<Transaction>[] = [
         header: () => null,
         cell: ({ row }) => {
             const tx = row.original as Transaction & { currency: string; exchangeRate: string };
-            const amt = row.getValue('amount') as number;
+            const amt = Number(row.getValue('amount'));
+
             return (
                 <div className="flex flex-col text-right mr-4">
-                    <span className={amt > 0 ? 'text-green-400' : 'text-red-400'}>
-                        {amt > 0 ? '+' : ''}
-                        {amt} kr
-                    </span>
+                    <span className={getAmtCn(amt)}>{fmtAmt(amt)}</span>
                     {tx.currency ? (
                         <span className="text-xs text-muted-foreground">
                             {tx.currency}, {parseFloat(tx.exchangeRate).toFixed(2)}

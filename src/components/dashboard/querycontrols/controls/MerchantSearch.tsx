@@ -2,16 +2,12 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export const MerchantSearch = ({ totalResults }: { totalResults: number }) => {
     const navigate = useNavigate();
     const { merchant } = useSearch({ from: '/dashboard' });
     const [value, setValue] = useState(merchant ?? '');
-
-    useEffect(() => {
-        setValue(merchant ?? '');
-    }, [merchant]);
 
     const handleSearch = useDebouncedCallback(
         (val: string) =>

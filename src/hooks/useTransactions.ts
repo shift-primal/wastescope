@@ -11,6 +11,7 @@ export const useTransactions = (query?: TransactionQuery) => {
                 .get<{
                     data: Transaction[];
                     totalResults: number;
+                    totalAmount: number;
                 }>('/api/transactions', { params: query })
                 .then((r) => r.data),
         placeholderData: (prev) => prev,
