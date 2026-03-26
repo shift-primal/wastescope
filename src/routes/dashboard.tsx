@@ -1,25 +1,27 @@
 import { Dashboard } from '#/components/Dashboard';
-import type { TransactionQuery } from '#/types/transactions';
 import { useTransactions } from '#/hooks/useTransactions';
 import { createFileRoute } from '@tanstack/react-router';
-import type { Category } from 'txcategorizer';
+import { CATEGORIES } from 'txcategorizer';
+import { z } from 'zod';
+
+const dashboardSearchSchema = z.object({
+    user: z.array(z.string()).optional(),
+    category: z.array(z.enum(CATEGORIES)).optional(),
+    minAmt: z.number().optional(),
+    maxAmt: z.number().optional(),
+    merchant: z.string().optional(),
+    from: z.string().default(`${new Date().getFullYear()}-01-01`),
+    to: z.string().default(new Date().toISOString().split('T')[0]),
+    sortBy: z.enum(['date', 'amount', 'merchant', 'category']).optional(),
+    sortDir: z.enum(['asc', 'desc']).optional(),
+    page: z.number().int().min(1).default(1),
+    pageSize: z.number().int().default(25),
+});
+
+export type DashboardSearch = z.infer<typeof dashboardSearchSchema>;
 
 export const Route = createFileRoute('/dashboard')({
-    validateSearch: (search) => {
-        return {
-            user: search.user as string[] | undefined,
-            category: (search.category as Category[]) ?? undefined,
-            minAmt: search.minAmt as number | undefined,
-            maxAmt: search.maxAmt as number | undefined,
-            merchant: search.merchant as string | undefined,
-            from: (search.from as string) ?? '2025-01-01',
-            to: (search.to as string) ?? new Date().toISOString().split('T')[0],
-            sortBy: search.sortBy as TransactionQuery['sortBy'] | undefined,
-            sortDir: search.sortDir as TransactionQuery['sortDir'] | undefined,
-            page: search.page ? Number(search.page) : 1,
-            pageSize: search.pageSize ? Number(search.pageSize) : 25,
-        };
-    },
+    validateSearch: dashboardSearchSchema,
     component: DashboardPage,
 });
 

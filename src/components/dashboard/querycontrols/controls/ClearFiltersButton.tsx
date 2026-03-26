@@ -1,4 +1,5 @@
 import { Button } from '#/components/ui/button';
+import type { DashboardSearch } from '#/routes/dashboard';
 import { useNavigate } from '@tanstack/react-router';
 import { RotateCcw } from 'lucide-react';
 
@@ -8,7 +9,7 @@ export const ClearFiltersButton = () => {
     const resetFilters = () =>
         navigate({
             to: '/dashboard',
-            search: () => ({}) as any,
+            search: () => ({}) as DashboardSearch,
         });
 
     return (

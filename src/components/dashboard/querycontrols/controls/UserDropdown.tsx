@@ -1,3 +1,5 @@
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -7,12 +9,12 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { Users } from 'lucide-react';
 
 export const UserDropdown = ({ allUsers }: { allUsers: string[] }) => {
     const { user: selectedUsers } = useSearch({ from: '/dashboard' });
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     return (
         <DropdownMenu>
@@ -31,16 +33,12 @@ export const UserDropdown = ({ allUsers }: { allUsers: string[] }) => {
                             onSelect={(e) => e.preventDefault()}
                             checked={selectedUsers?.includes(user) ?? false}
                             onCheckedChange={(checked: boolean) => {
-                                navigate({
-                                    to: '/dashboard',
-                                    search: (prev: any) => ({
-                                        ...prev,
-                                        user: checked
-                                            ? [...(prev.user ?? []), user]
-                                            : (prev.user ?? []).filter((c: string) => c !== user),
-                                    }),
-                                    resetScroll: false,
-                                });
+                                navigate((prev: DashboardSearch) => ({
+                                    ...prev,
+                                    user: checked
+                                        ? [...(prev.user ?? []), user]
+                                        : (prev.user ?? []).filter((c: string) => c !== user),
+                                }));
                             }}
                         >
                             {user}

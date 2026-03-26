@@ -1,16 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '#/lib/utils';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { format as fmtDate, endOfMonth, startOfMonth } from 'date-fns';
 import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
 
 export const DatePicker = () => {
     const { from: fromStr, to: toStr } = useSearch({ from: '/dashboard' });
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     const from = new Date(fromStr);
     const to = new Date(toStr);
@@ -23,24 +25,16 @@ export const DatePicker = () => {
         const toMonth = startOfMonth(to);
 
         if (selected < fromMonth || (selected >= fromMonth && selected <= toMonth)) {
-            navigate({
-                to: '/dashboard',
-                search: (prev: any) => ({
-                    ...prev,
-                    from: fmtDate(startOfMonth(selected), 'yyyy-MM-dd'),
-                    to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
-                }),
-                resetScroll: false,
-            });
+            navigate((prev: DashboardSearch) => ({
+                ...prev,
+                from: fmtDate(startOfMonth(selected), 'yyyy-MM-dd'),
+                to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
+            }));
         } else {
-            navigate({
-                to: '/dashboard',
-                search: (prev: any) => ({
-                    ...prev,
-                    to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
-                }),
-                resetScroll: false,
-            });
+            navigate((prev: DashboardSearch) => ({
+                ...prev,
+                to: fmtDate(endOfMonth(selected), 'yyyy-MM-dd'),
+            }));
         }
     };
 

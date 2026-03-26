@@ -1,5 +1,7 @@
 import { Label } from '#/components/ui/label';
 import { Switch } from '#/components/ui/switch';
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
 import { SORT_FIELDS } from '#/types/transactions';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,7 +12,7 @@ import {
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { ArrowUpDown, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -18,30 +20,22 @@ export const SortDropdown = () => {
     const { sortBy, sortDir } = useSearch({ from: '/dashboard' });
 
     const [rotation, setRotation] = useState(sortDir === 'desc' ? 0 : 180);
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     const handleSortField = (value: string) => {
         const field = value.split(':')[0];
-        navigate({
-            to: '/dashboard',
-            search: (prev: any) => ({
-                ...prev,
-                sortBy: field,
-            }),
-            resetScroll: false,
-        });
+        navigate((prev: DashboardSearch) => ({
+            ...prev,
+            sortBy: field,
+        }));
     };
 
     const handleSortDir = (switched: boolean) => {
         setRotation((r) => r + 180);
-        navigate({
-            to: '/dashboard',
-            search: (prev: any) => ({
-                ...prev,
-                sortDir: switched ? 'asc' : 'desc',
-            }),
-            resetScroll: false,
-        });
+        navigate((prev: DashboardSearch) => ({
+            ...prev,
+            sortDir: switched ? 'asc' : 'desc',
+        }));
     };
 
     return (

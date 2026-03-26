@@ -1,3 +1,5 @@
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -7,14 +9,13 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { LayoutList } from 'lucide-react';
-
-import { CATEGORIES } from 'txcategorizer';
+import { CATEGORIES, type Category } from 'txcategorizer';
 
 export const CategoriesDropdown = () => {
     const { category: selectedCategories } = useSearch({ from: '/dashboard' });
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     return (
         <DropdownMenu>
@@ -32,20 +33,16 @@ export const CategoriesDropdown = () => {
                             key={category}
                             onSelect={(e) => e.preventDefault()}
                             checked={selectedCategories?.includes(category) ?? false}
-                            onCheckedChange={(checked: boolean) => {
-                                navigate({
-                                    to: '/dashboard',
-                                    search: (prev: any) => ({
-                                        ...prev,
-                                        category: checked
-                                            ? [...(prev.category ?? []), category]
-                                            : (prev.category ?? []).filter(
-                                                  (c: string) => c !== category,
-                                              ),
-                                    }),
-                                    resetScroll: false,
-                                });
-                            }}
+                            onCheckedChange={(checked) =>
+                                navigate((prev: DashboardSearch) => ({
+                                    ...prev,
+                                    category: checked
+                                        ? [...(prev.category ?? []), category]
+                                        : (prev.category ?? []).filter(
+                                              (c: Category) => c !== category,
+                                          ),
+                                }))
+                            }
                         >
                             {category}
                         </DropdownMenuCheckboxItem>

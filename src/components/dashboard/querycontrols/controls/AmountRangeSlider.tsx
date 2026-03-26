@@ -1,5 +1,7 @@
 import { Slider } from '#/components/ui/slider';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
+import { useSearch } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -10,18 +12,14 @@ export const AmountRangeSlider = ({
 }) => {
     const { minAmt, maxAmt } = useSearch({ from: '/dashboard' });
     const { minBound, maxBound } = amtBounds;
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     const [localValue, setLocalValue] = useState([minAmt || minBound, maxAmt || maxBound]);
     const [activeThumb, setActiveThumb] = useState<number | null>(null);
     const wasDragging = useRef(false);
 
     const handleChange = useDebouncedCallback((values: number[]) => {
-        navigate({
-            to: '/dashboard',
-            search: (prev: any) => ({ ...prev, minAmt: values[0], maxAmt: values[1] }),
-            resetScroll: false,
-        });
+        navigate((prev: DashboardSearch) => ({ ...prev, minAmt: values[0], maxAmt: values[1] }));
     }, 300);
 
     return (

@@ -5,20 +5,16 @@ export type { TransactionQuery } from '#/types/transactions';
 export { SORT_FIELDS } from '#/types/transactions';
 import type { TransactionQuery } from '#/types/transactions';
 
-export async function getTransactions(query: TransactionQuery = {}) {
+function buildConditions(query: TransactionQuery = {}) {
     const conditions = [];
 
     if (query.user?.length) conditions.push(inArray(transactions.user, query.user));
-
     if (query.category?.length) conditions.push(inArray(transactions.category, query.category));
-
     if (query.minAmt && query.maxAmt)
         conditions.push(
             between(transactions.amount, query.minAmt.toString(), query.maxAmt.toString()),
         );
-
     if (query.from && query.to) conditions.push(between(transactions.date, query.from, query.to));
-
     if (query.merchant)
         conditions.push(
             or(
@@ -27,13 +23,17 @@ export async function getTransactions(query: TransactionQuery = {}) {
             ),
         );
 
+    return conditions;
+}
+
+export async function getTransactions(query: TransactionQuery = {}) {
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 25;
 
     const orderCol = query.sortBy ? transactions[query.sortBy] : transactions.date;
     const orderDir = query.sortDir === 'asc' ? asc(orderCol) : desc(orderCol);
 
-    const where = and(...conditions);
+    const where = and(...buildConditions(query));
 
     const [data, [{ totalResults }], [{ totalAmount }]] = await Promise.all([
         db

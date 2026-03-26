@@ -1,3 +1,5 @@
+import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import type { DashboardSearch } from '#/routes/dashboard';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -8,24 +10,22 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 export const PageSizeDropdown = () => {
     const { pageSize } = useSearch({ from: '/dashboard' });
-    const navigate = useNavigate();
+    const navigate = useDashboardNavigate();
 
     const currentPageSize = pageSize.toString();
     const pageSizeOptions = [10, 25, 50, 75, 100];
 
-    const handlePageSize = (value: string) =>
-        navigate({
-            to: '/dashboard',
-            search: (prev: any) => ({
-                ...prev,
-                pageSize: value,
-            }),
-            resetScroll: false,
-        });
+    const handlePageSize = (value: string) => {
+        const newPageSize = Number(value);
+        navigate((prev: DashboardSearch) => ({
+            ...prev,
+            pageSize: newPageSize,
+        }));
+    };
 
     return (
         <DropdownMenu>
