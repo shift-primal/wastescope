@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
 import type { DashboardSearch } from '#/routes/dashboard';
 
-export const MerchantSearch = ({ totalResults }: { totalResults: number }) => {
+export const MerchantSearch = () => {
     const navigate = useDashboardNavigate();
     const { merchant } = useSearch({ from: '/dashboard' });
     const [value, setValue] = useState(merchant ?? '');
@@ -33,7 +33,6 @@ export const MerchantSearch = ({ totalResults }: { totalResults: number }) => {
             <InputGroupAddon>
                 <Search />
             </InputGroupAddon>
-            <InputGroupAddon align="inline-end">{totalResults} rader</InputGroupAddon>
         </InputGroup>
     );
 };

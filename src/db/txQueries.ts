@@ -1,4 +1,17 @@
-import { and, asc, between, count, desc, inArray, ilike, min, max, or, sum } from 'drizzle-orm';
+import {
+    and,
+    asc,
+    between,
+    count,
+    desc,
+    inArray,
+    ilike,
+    min,
+    max,
+    or,
+    sum,
+    sql,
+} from 'drizzle-orm';
 import { transactions } from './schema';
 import { db } from './index.ts';
 export type { TransactionQuery } from '#/types/transactions';
@@ -70,4 +83,31 @@ export async function getAmtBounds() {
 export async function getUsers() {
     const rows = await db.selectDistinct({ user: transactions.user }).from(transactions);
     return rows.map((r) => r.user);
+}
+
+export async function getCategoryStats(query: TransactionQuery) {
+    const where = and(...buildConditions(query));
+
+    return await db
+        .select({
+            category: transactions.category,
+            total: sum(transactions.amount),
+        })
+        .from(transactions)
+        .where(where)
+        .groupBy(transactions.category);
+}
+
+export async function getMonthlyStats(query: TransactionQuery) {
+    const where = and(...buildConditions(query));
+
+    return await db
+        .select({
+            month: sql<string>`to_char(date_trunc('month', ${transactions.date}), 'YYYY-MM')`,
+            total: sum(transactions.amount),
+        })
+        .from(transactions)
+        .where(and(where, sql`${transactions.amount} < 0`))
+        .groupBy(sql`date_trunc('month', ${transactions.date})`)
+        .orderBy(sql`date_trunc('month', ${transactions.date})`);
 }

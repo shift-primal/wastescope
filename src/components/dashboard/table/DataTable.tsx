@@ -1,6 +1,7 @@
 import {
     Table,
     TableBody,
+    TableCaption,
     TableCell,
     TableFooter,
     TableHead,
@@ -18,7 +19,6 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     totalResults: number;
-    totalAmount: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,7 +68,13 @@ export function DataTable<TData, TValue>({
                 <TableHeader>
                     <TableRow className="hover:bg-transparent">
                         <TableHead colSpan={columns.length}>
-                            <QueryControls totalResults={totalResults} />
+                            <div className="flex flex-col my-0 p-2">
+                                <QueryControls />
+                                <TableCaption className="text-xs">
+                                    Viser {table.getRowModel().rows.length} av {totalResults}{' '}
+                                    resultater...
+                                </TableCaption>
+                            </div>
                         </TableHead>
                     </TableRow>
                 </TableHeader>

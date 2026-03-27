@@ -10,7 +10,7 @@ const dashboardSearchSchema = z.object({
     minAmt: z.number().optional(),
     maxAmt: z.number().optional(),
     merchant: z.string().optional(),
-    from: z.string().default(`${new Date().getFullYear()}-01-01`),
+    from: z.string().default(`${new Date().getFullYear() - 2}-01-01`),
     to: z.string().default(new Date().toISOString().split('T')[0]),
     sortBy: z.enum(['date', 'amount', 'merchant', 'category']).optional(),
     sortDir: z.enum(['asc', 'desc']).optional(),

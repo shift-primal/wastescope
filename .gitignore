@@ -13,3 +13,8 @@ __unconfig*
 todos.json
 /drizzle
 /scripts
+/.agents/skills
+/.claude/skills
+/TODO.md
+/TODO_UI.md
+/skills-lock.json

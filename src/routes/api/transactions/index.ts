@@ -36,8 +36,7 @@ export const Route = createFileRoute('/api/transactions/')({
                         : undefined,
                 };
 
-                const txs = await getTransactions(query);
-                return Response.json(txs);
+                return Response.json(await getTransactions(query));
             },
 
             POST: async ({ request }) => {
