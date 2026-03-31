@@ -8,18 +8,19 @@ import {
 } from '@/components/ui/chart';
 import type { MonthlyStat } from '#/types/transactions';
 import { formatDate as fmtDate } from 'date-fns';
-
-const chartConfig = {
-    total: {
-        label: 'Utgifter',
-        color: 'var(--chart-1)',
-    },
-} satisfies ChartConfig;
+import { parseAmt } from '#/lib/tableUtils';
 
 export const ByMonthAreaChart = ({ data }: { data: MonthlyStat[] }) => {
+    const chartConfig = {
+        total: {
+            label: 'Utgifter',
+            color: 'var(--chart-3)',
+        },
+    } satisfies ChartConfig;
+
     const chartData = data.map((d) => ({
         month: d.month,
-        total: Math.abs(parseFloat(d.total ?? '0')),
+        total: parseAmt(d.total),
     }));
 
     return (

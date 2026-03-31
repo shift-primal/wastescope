@@ -94,7 +94,7 @@ export async function getCategoryStats(query: TransactionQuery) {
             total: sum(transactions.amount),
         })
         .from(transactions)
-        .where(where)
+        .where(and(where, sql`${transactions.amount} < 0`))
         .groupBy(transactions.category);
 }
 
