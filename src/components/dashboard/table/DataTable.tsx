@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableFooter,
     TableHead,
@@ -10,57 +9,37 @@ import {
 } from '#/components/ui/table';
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 import { QueryControls } from '../querycontrols/QueryControls';
-import type { Transaction } from 'txcategorizer';
+import type { DbTransaction } from '#/types/transactions';
 import { fmtAmt, getAmtCn } from '#/lib/tableUtils';
 import { cn } from '#/lib/utils';
 import { Fragment } from 'react/jsx-runtime';
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
+interface DataTableProps {
+    columns: ColumnDef<DbTransaction>[];
+    data: DbTransaction[];
     totalResults: number;
 }
 
-export function DataTable<TData, TValue>({
-    columns,
-    data,
-    totalResults,
-}: DataTableProps<TData, TValue>) {
+function getSums(txs: DbTransaction[]) {
+    const amtIn = Math.round(
+        txs.filter((tx) => Number(tx.amount) > 0).reduce((sum, tx) => sum + Number(tx.amount), 0),
+    );
+    const amtOut = Math.round(
+        txs.filter((tx) => Number(tx.amount) < 0).reduce((sum, tx) => sum + Number(tx.amount), 0),
+    );
+    return {
+        amtIn: { amt: amtIn, header: 'Inn' },
+        amtOut: { amt: amtOut, header: 'Ut' },
+        total: { amt: amtIn + amtOut, header: 'Total' },
+    };
+}
+
+export function DataTable({ columns, data, totalResults }: DataTableProps) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-
-    function getSums(txs: Transaction[]) {
-        const amtIn = Math.round(
-            txs
-                .filter((tx) => Number(tx.amount) > 0)
-                .reduce((sum, tx) => sum + Number(tx.amount), 0),
-        );
-        const amtOut = Math.round(
-            txs
-                .filter((tx) => Number(tx.amount) < 0)
-                .reduce((sum, tx) => sum + Number(tx.amount), 0),
-        );
-
-        return {
-            amtIn: {
-                amt: amtIn,
-                header: 'Inn',
-            },
-
-            amtOut: {
-                amt: amtOut,
-                header: 'Ut',
-            },
-
-            total: {
-                amt: amtIn + amtOut,
-                header: 'Total',
-            },
-        };
-    }
 
     return (
         <div className="overflow-hidden rounded-md border flex flex-col w-fit mx-auto">
@@ -70,10 +49,9 @@ export function DataTable<TData, TValue>({
                         <TableHead colSpan={columns.length}>
                             <div className="flex flex-col my-0 p-2">
                                 <QueryControls />
-                                <TableCaption className="text-xs">
-                                    Viser {table.getRowModel().rows.length} av {totalResults}{' '}
-                                    resultater...
-                                </TableCaption>
+                                <p className="text-xs text-muted-foreground mx-auto my-0.5">
+                                    {`Viser ${table.getRowModel().rows.length} av ${totalResults} resultater...`}
+                                </p>
                             </div>
                         </TableHead>
                     </TableRow>
@@ -102,7 +80,7 @@ export function DataTable<TData, TValue>({
                     <TableRow className="hover:bg-transparent">
                         <TableCell colSpan={columns.length}>
                             <div className="flex w-full items-center justify-center gap-x-16">
-                                {Object.values(getSums(data as Transaction[])).map((d, i, arr) => (
+                                {Object.values(getSums(data)).map((d, i, arr) => (
                                     <Fragment key={d.header}>
                                         <div className="flex items-center flex-col min-w-18">
                                             <span className="text-xs text-muted-foreground">

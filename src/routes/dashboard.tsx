@@ -1,4 +1,5 @@
 import { Dashboard } from '#/components/Dashboard';
+import { useMonthlyStats } from '#/hooks/useMonthlyStats';
 import { useTransactions } from '#/hooks/useTransactions';
 import { createFileRoute } from '@tanstack/react-router';
 import { CATEGORIES } from 'txcategorizer';
@@ -28,12 +29,17 @@ export const Route = createFileRoute('/dashboard')({
 export function DashboardPage() {
     const search = Route.useSearch();
     const { data: txResult, isLoading: txsLoading } = useTransactions(search);
+    const { data: monthlyStats, isLoading: monthlyLoading } = useMonthlyStats(search);
 
-    if (txResult === undefined) return <h1>loading</h1>;
+    if (!txResult || !monthlyStats) return <h1>loading</h1>;
 
     return (
         <div>
-            <Dashboard txResult={txResult} className={txsLoading ? 'opacity-50' : ''} />
+            <Dashboard
+                txResult={txResult}
+                monthlyStats={monthlyStats}
+                className={txsLoading || monthlyLoading ? 'opacity-50' : ''}
+            />
         </div>
     );
 }

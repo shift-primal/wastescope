@@ -15,3 +15,5 @@ export const transactions = pgTable('transactions', {
     exchangeRate: numeric(),
     user: text().notNull(),
 });
+
+export type DbTransaction = typeof transactions.$inferSelect;

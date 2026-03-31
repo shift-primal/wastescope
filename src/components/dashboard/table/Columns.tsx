@@ -1,6 +1,7 @@
 import { format as fmtDate } from 'date-fns';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { Category, Transaction } from 'txcategorizer';
+import type { Category } from 'txcategorizer';
+import type { DbTransaction } from '#/types/transactions';
 import {
     ArrowRightLeft,
     BedDouble,
@@ -53,7 +54,7 @@ const categoryIcons: Record<Category, LucideIcon> = {
     'Annet': CircleQuestionMark,
 };
 
-export const columns: ColumnDef<Transaction>[] = [
+export const columns: ColumnDef<DbTransaction>[] = [
     {
         accessorKey: 'category',
         header: () => null,
@@ -75,7 +76,7 @@ export const columns: ColumnDef<Transaction>[] = [
         accessorKey: 'merchant',
         header: () => null,
         cell: ({ row }) => {
-            const tx = row.original as Transaction & { user: string };
+            const tx = row.original;
             return (
                 <div className="flex flex-col">
                     <span>{row.getValue('merchant')}</span>
@@ -107,13 +108,13 @@ export const columns: ColumnDef<Transaction>[] = [
         accessorKey: 'amount',
         header: () => null,
         cell: ({ row }) => {
-            const tx = row.original as Transaction & { currency: string; exchangeRate: string };
+            const tx = row.original;
             const amt = Number(row.getValue('amount'));
 
             return (
                 <div className="flex flex-col text-right mr-4">
                     <span className={getAmtCn(amt)}>{fmtAmt(amt)}</span>
-                    {tx.currency ? (
+                    {tx.exchangeRate ? (
                         <span className="text-xs text-muted-foreground">
                             {tx.currency}, {parseFloat(tx.exchangeRate).toFixed(2)}
                         </span>

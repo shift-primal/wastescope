@@ -1,4 +1,22 @@
 import type { Category } from 'txcategorizer';
+import type { DbTransaction } from '#/db/schema';
+
+export type { DbTransaction };
+
+export type TransactionResult = {
+    data: DbTransaction[];
+    totalResults: number;
+};
+
+export type CategoryStat = {
+    category: Category;
+    total: string | null;
+};
+
+export type MonthlyStat = {
+    month: string;
+    total: string | null;
+};
 
 export type TransactionQuery = {
     // filtering
