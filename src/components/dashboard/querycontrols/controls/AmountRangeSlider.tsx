@@ -42,7 +42,7 @@ export const AmountRangeSlider = ({
             }}
             onValueCommit={() => setActiveThumb(null)}
             customThumb
-            className="mx-auto w-full max-w-xs"
+            className="max-w-[90%] mx-auto"
         />
     );
 };

@@ -98,7 +98,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
             return (
                 <div className="flex flex-col items-end">
                     <span>{formattedDate}</span>
-                    <span className="text-[0.6rem] text-muted-foreground">{formattedYear}</span>
+                    <span className="text-xs text-muted-foreground">{formattedYear}</span>
                 </div>
             );
         },

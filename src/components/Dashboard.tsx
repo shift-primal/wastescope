@@ -3,8 +3,7 @@ import { columns } from './dashboard/table/Columns';
 import { DataTable } from './dashboard/table/DataTable';
 import { cn } from '#/lib/utils';
 import { PageControls } from './dashboard/querycontrols/controls/PageControls';
-import { ByMonthAreaChart } from './dashboard/charts/ByMonthAreaChart';
-import { ByCategoryDonutChart } from './dashboard/charts/ByCategoryDonutChart';
+import { DataCharts } from './dashboard/charts/DataCharts';
 
 export function Dashboard({
     txResult,
@@ -20,13 +19,10 @@ export function Dashboard({
     const { data: txData, totalResults } = txResult;
 
     return (
-        <div>
-            <div className={cn('p-6 flex flex-col items-center gap-y-4', className)}>
-                <ByMonthAreaChart data={monthlyStats} />
-                <ByCategoryDonutChart data={categoryStats} />
-                <DataTable columns={columns} data={txData} totalResults={totalResults} />
-                <PageControls />
-            </div>
+        <div className={cn('p-6 flex flex-col items-center gap-y-4 w-fit mx-auto', className)}>
+            <DataCharts monthlyStats={monthlyStats} categoryStats={categoryStats} />
+            <DataTable columns={columns} data={txData} totalResults={totalResults} />
+            <PageControls />
         </div>
     );
 }

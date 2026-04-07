@@ -1,4 +1,5 @@
 import { Dashboard } from '#/components/Dashboard';
+import { DataTableSkeleton } from '#/components/dashboard/table/DataTableSkeleton';
 import { useCategoryStats } from '#/hooks/useCategoryStats';
 import { useMonthlyStats } from '#/hooks/useMonthlyStats';
 import { useTransactions } from '#/hooks/useTransactions';
@@ -33,7 +34,7 @@ export function DashboardPage() {
     const { data: monthlyStats, isLoading: monthlyLoading } = useMonthlyStats(search);
     const { data: categoryStats, isLoading: categoryLoading } = useCategoryStats(search);
 
-    if (!txResult || !monthlyStats || !categoryStats) return <h1>loading</h1>;
+    if (!txResult || !monthlyStats || !categoryStats) return <DataTableSkeleton />;
 
     return (
         <div>

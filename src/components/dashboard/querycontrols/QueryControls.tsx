@@ -15,13 +15,23 @@ export const QueryControls = () => {
     const { data: allUsers } = useUsers();
 
     return (
-        <div id="query-controls-container" className="flex gap-x-4 py-2 min-w-max">
-            {allUsers && <UserDropdown allUsers={allUsers} />}
-            <CategoriesDropdown />
-            <MerchantSearch key={merchant ?? ''} />
-            <DatePicker />
-            <SortDropdown />
-            <ClearFiltersButton />
+        <div id="query-controls-container" className="flex flex-col gap-y-4 py-2">
+            <div className="flex divide-x divide-border">
+                <div className="flex gap-x-3 pr-6">
+                    {allUsers && <UserDropdown allUsers={allUsers} />}
+                    <CategoriesDropdown />
+                </div>
+                <div className="px-6">
+                    <MerchantSearch key={merchant ?? ''} />
+                </div>
+                <div className="px-6">
+                    <DatePicker />
+                </div>
+                <div className="flex gap-x-3 pl-6">
+                    <SortDropdown />
+                    <ClearFiltersButton />
+                </div>
+            </div>
             {amtBounds && (
                 <AmountRangeSlider key={`${minAmt ?? ''}-${maxAmt ?? ''}`} amtBounds={amtBounds} />
             )}

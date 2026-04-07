@@ -1,0 +1,41 @@
+# Wastescope — TODO
+
+## Task Checklist
+
+### Bugs & Correctness
+
+- [x] Reset `page` to 1 whenever any filter changes — currently you can be stuck on page 5 after filtering down to 1 page of results
+- [x] Fix hardcoded `from: '2025-01-01'` in `validateSearch` — derive dynamically
+- [x] Fix `pageSize` passed as string from `PageSizeDropdown` — `DropdownMenuRadioItem` gives strings, cast explicitly in `handlePageSize`
+
+### Cleanup
+
+- [x] Delete `src/hooks/useTotal.ts` — empty file
+- [x] Delete `getTotalAmount()` from `src/db/txQueries.ts` — superseded by `totalAmount` inside `getTransactions`
+- [x] Extract `buildConditions(query)` from `getTransactions` — reusable WHERE clause builder for upcoming stat queries
+
+### Code Quality
+
+- [x] Remove `any` on `prev` in all `navigate()` calls — TanStack Router knows the search type, use it
+- [x] Add real validation to `validateSearch` — currently all fields use `as` casts with no bounds checking (e.g. `page: -1` is accepted). Consider Zod
+- [x] Fix hardcoded `baseURL: 'http://localhost:3000'` in `apiclient.ts` — use relative base or `import.meta.env.VITE_API_URL`
+
+### Charts — New Endpoints
+
+- [x] Add `getCategoryStats(query)` to `txQueries.ts`
+- [x] Add `getMonthlyStats(query)` to `txQueries.ts`
+- [x] Add API endpoint `GET /api/transactions/stats/by-category`
+- [x] Add API endpoint `GET /api/transactions/stats/by-month`
+- [x] Add `useCategoryStats(query)` hook
+- [x] Add `useMonthlyStats(query)` hook
+- [ ] Build pie/donut chart component (category breakdown for current search)
+- [ ] Build area/line chart component (monthly outgoing for current search)
+- [ ] Wire charts into `DashboardPage` alongside `useTransactions`
+
+### Features
+
+- [x] Reset amount slider and user dropdown with reset button
+- [ ] Keyboard shortcut (ESC) to reset all filters
+- [ ] Duplicate detection on import (same date + amount + merchant)
+- [ ] Click row to expand details
+- [x] Add next/prev page controls and page size selector
