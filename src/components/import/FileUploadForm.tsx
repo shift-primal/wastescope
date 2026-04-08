@@ -2,7 +2,6 @@ import { useForm } from '@tanstack/react-form';
 import { useRef } from 'react';
 import { toast } from 'sonner';
 import type { Bank } from 'txcategorizer';
-import * as z from 'zod';
 import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field';
 import {
     Select,
@@ -12,18 +11,19 @@ import {
     SelectValue,
 } from '#/components/ui/select';
 import { useAddTransaction } from '#/hooks/useAddTransaction';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { InputFile } from './ui/custom/InputFile';
-import { Input } from './ui/input';
-
-const banks = ['dnb', 'valle'] as const;
-
-const formSchema = z.object({
-    file: z.instanceof(File, { message: 'Velg en fil' }),
-    bank: z.enum(banks),
-    user: z.string().min(3, 'Minst 3 karakterer').max(32, 'Max 32 karakterer'),
-});
+import { Button } from '#/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '#/components/ui/card';
+import { InputFile } from '#/components/ui/custom/InputFile';
+import { useUsers } from '#/hooks/useUsers';
+import { CreateNewUser } from './CreateNewUser';
+import { uploadFormSchema } from '#/lib/validators';
 
 export const FileUploadForm = () => {
     const { mutate: uploadFile, isPending: uploadPending } = useAddTransaction();
@@ -42,10 +42,12 @@ export const FileUploadForm = () => {
             user: '',
         },
         validators: {
-            onBlur: formSchema,
+            onBlur: uploadFormSchema,
         },
         onSubmit: async ({ value }) => handleSubmit({ value }),
     });
+
+    const { data: users } = useUsers();
 
     return (
         <Card className="border-2 flex w-fit h-max p-12 min-w-96 self-center mx-auto flex-col gap-y-8 ring-foreground/10 bg-card text-card-foreground rounded-lg mt-8">
@@ -137,19 +139,39 @@ export const FileUploadForm = () => {
                                             htmlFor={field.name}
                                             className="pointer-events-none"
                                         >
-                                            Navn...
+                                            Velg bruker...
                                         </FieldLabel>
-                                        <Input
-                                            id={field.name}
+                                        <Select
                                             name={field.name}
-                                            className="hover:bg-input/10"
                                             value={field.state.value}
-                                            onBlur={field.handleBlur}
-                                            onChange={(e) => field.handleChange(e.target.value)}
+                                            onValueChange={(value) =>
+                                                field.handleChange(value as string)
+                                            }
                                             aria-invalid={isInvalid}
-                                            placeholder="Ola Nordmann"
-                                            autoComplete="off"
-                                        />
+                                        >
+                                            <SelectTrigger
+                                                id={field.name}
+                                                className="hover:cursor-pointer hover:bg-input/10"
+                                            >
+                                                <SelectValue placeholder="Ola Nordmann..." />
+                                            </SelectTrigger>
+                                            <SelectContent position="popper">
+                                                {users?.length ? (
+                                                    users.map((user) => (
+                                                        <SelectItem
+                                                            key={user.name}
+                                                            value={user.name}
+                                                        >
+                                                            {user.name}
+                                                        </SelectItem>
+                                                    ))
+                                                ) : (
+                                                    <div className="py-2 px-3 text-sm text-muted-foreground">
+                                                        Ingen brukere funnet
+                                                    </div>
+                                                )}
+                                            </SelectContent>
+                                        </Select>
                                         {isInvalid && (
                                             <FieldError errors={field.state.meta.errors} />
                                         )}
@@ -178,6 +200,7 @@ export const FileUploadForm = () => {
                     </CardFooter>
                 )}
             />
+            <CreateNewUser />
         </Card>
     );
 };

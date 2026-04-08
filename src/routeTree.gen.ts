@@ -12,8 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiUsersIndexRouteImport } from './routes/api/users/index'
 import { Route as ApiTransactionsIndexRouteImport } from './routes/api/transactions/index'
-import { Route as ApiTransactionsUsersRouteImport } from './routes/api/transactions/users'
 import { Route as ApiTransactionsAmtboundsRouteImport } from './routes/api/transactions/amtbounds'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiTransactionsStatsIndexRouteImport } from './routes/api/transactions/stats/index'
@@ -35,14 +35,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiUsersIndexRoute = ApiUsersIndexRouteImport.update({
+  id: '/api/users/',
+  path: '/api/users/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTransactionsIndexRoute = ApiTransactionsIndexRouteImport.update({
   id: '/api/transactions/',
   path: '/api/transactions/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTransactionsUsersRoute = ApiTransactionsUsersRouteImport.update({
-  id: '/api/transactions/users',
-  path: '/api/transactions/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTransactionsAmtboundsRoute =
@@ -81,8 +81,8 @@ export interface FileRoutesByFullPath {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
-  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions/': typeof ApiTransactionsIndexRoute
+  '/api/users/': typeof ApiUsersIndexRoute
   '/api/transactions/stats/by-category': typeof ApiTransactionsStatsByCategoryRoute
   '/api/transactions/stats/by-month': typeof ApiTransactionsStatsByMonthRoute
   '/api/transactions/stats/': typeof ApiTransactionsStatsIndexRoute
@@ -93,8 +93,8 @@ export interface FileRoutesByTo {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
-  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions': typeof ApiTransactionsIndexRoute
+  '/api/users': typeof ApiUsersIndexRoute
   '/api/transactions/stats/by-category': typeof ApiTransactionsStatsByCategoryRoute
   '/api/transactions/stats/by-month': typeof ApiTransactionsStatsByMonthRoute
   '/api/transactions/stats': typeof ApiTransactionsStatsIndexRoute
@@ -106,8 +106,8 @@ export interface FileRoutesById {
   '/import': typeof ImportRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/transactions/amtbounds': typeof ApiTransactionsAmtboundsRoute
-  '/api/transactions/users': typeof ApiTransactionsUsersRoute
   '/api/transactions/': typeof ApiTransactionsIndexRoute
+  '/api/users/': typeof ApiUsersIndexRoute
   '/api/transactions/stats/by-category': typeof ApiTransactionsStatsByCategoryRoute
   '/api/transactions/stats/by-month': typeof ApiTransactionsStatsByMonthRoute
   '/api/transactions/stats/': typeof ApiTransactionsStatsIndexRoute
@@ -120,8 +120,8 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
-    | '/api/transactions/users'
     | '/api/transactions/'
+    | '/api/users/'
     | '/api/transactions/stats/by-category'
     | '/api/transactions/stats/by-month'
     | '/api/transactions/stats/'
@@ -132,8 +132,8 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
-    | '/api/transactions/users'
     | '/api/transactions'
+    | '/api/users'
     | '/api/transactions/stats/by-category'
     | '/api/transactions/stats/by-month'
     | '/api/transactions/stats'
@@ -144,8 +144,8 @@ export interface FileRouteTypes {
     | '/import'
     | '/api/auth/$'
     | '/api/transactions/amtbounds'
-    | '/api/transactions/users'
     | '/api/transactions/'
+    | '/api/users/'
     | '/api/transactions/stats/by-category'
     | '/api/transactions/stats/by-month'
     | '/api/transactions/stats/'
@@ -157,8 +157,8 @@ export interface RootRouteChildren {
   ImportRoute: typeof ImportRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTransactionsAmtboundsRoute: typeof ApiTransactionsAmtboundsRoute
-  ApiTransactionsUsersRoute: typeof ApiTransactionsUsersRoute
   ApiTransactionsIndexRoute: typeof ApiTransactionsIndexRoute
+  ApiUsersIndexRoute: typeof ApiUsersIndexRoute
   ApiTransactionsStatsByCategoryRoute: typeof ApiTransactionsStatsByCategoryRoute
   ApiTransactionsStatsByMonthRoute: typeof ApiTransactionsStatsByMonthRoute
   ApiTransactionsStatsIndexRoute: typeof ApiTransactionsStatsIndexRoute
@@ -187,18 +187,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/users/': {
+      id: '/api/users/'
+      path: '/api/users'
+      fullPath: '/api/users/'
+      preLoaderRoute: typeof ApiUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/transactions/': {
       id: '/api/transactions/'
       path: '/api/transactions'
       fullPath: '/api/transactions/'
       preLoaderRoute: typeof ApiTransactionsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/transactions/users': {
-      id: '/api/transactions/users'
-      path: '/api/transactions/users'
-      fullPath: '/api/transactions/users'
-      preLoaderRoute: typeof ApiTransactionsUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/transactions/amtbounds': {
@@ -245,8 +245,8 @@ const rootRouteChildren: RootRouteChildren = {
   ImportRoute: ImportRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTransactionsAmtboundsRoute: ApiTransactionsAmtboundsRoute,
-  ApiTransactionsUsersRoute: ApiTransactionsUsersRoute,
   ApiTransactionsIndexRoute: ApiTransactionsIndexRoute,
+  ApiUsersIndexRoute: ApiUsersIndexRoute,
   ApiTransactionsStatsByCategoryRoute: ApiTransactionsStatsByCategoryRoute,
   ApiTransactionsStatsByMonthRoute: ApiTransactionsStatsByMonthRoute,
   ApiTransactionsStatsIndexRoute: ApiTransactionsStatsIndexRoute,

@@ -17,14 +17,38 @@ interface DataTableProps {
     columns: ColumnDef<DbTransaction>[];
     data: DbTransaction[];
     totalResults: number;
+    unfilteredTotal: number;
+    totalIn: number;
+    totalOut: number;
 }
 
-export function DataTable({ columns, data, totalResults }: DataTableProps) {
+export interface Stats {
+    header: string;
+    amt: number;
+    total?: number;
+    isCount?: boolean;
+}
+
+export function DataTable({
+    columns,
+    data,
+    totalResults,
+    totalIn,
+    totalOut,
+    unfilteredTotal,
+}: DataTableProps) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
+
+    const stats: Stats[] = [
+        { header: 'Resultater', amt: totalResults, total: unfilteredTotal, isCount: true },
+        { header: 'Inn', amt: totalIn },
+        { header: 'Ut', amt: totalOut },
+        { header: 'Netto', amt: totalIn + totalOut },
+    ];
 
     return (
         <div className="overflow-hidden rounded-md border flex flex-col w-full">
@@ -34,7 +58,7 @@ export function DataTable({ columns, data, totalResults }: DataTableProps) {
                         <TableHead colSpan={columns.length}>
                             <div className="flex flex-col items-center gap-y-2 py-2 px-4">
                                 <QueryControls />
-                                <QueryResults data={data} totalResults={totalResults} />
+                                <QueryResults stats={stats} />
                             </div>
                         </TableHead>
                     </TableRow>
@@ -60,7 +84,11 @@ export function DataTable({ columns, data, totalResults }: DataTableProps) {
                     )}
                 </TableBody>
                 <TableFooter className="flex justify-center py-2 bg-transparent">
-                    <PageControls />
+                    <TableRow className="hover:bg-transparent">
+                        <TableCell colSpan={columns.length}>
+                            <PageControls />
+                        </TableCell>
+                    </TableRow>
                 </TableFooter>
             </Table>
         </div>

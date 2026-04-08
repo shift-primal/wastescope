@@ -1,11 +1,26 @@
 import type { Category } from 'txcategorizer';
+import type { z } from 'zod';
 import type { DbTransaction } from '#/db/schema';
+import type { dashboardSearchSchema } from '#/lib/validators';
 
-export type { DbTransaction };
+// queriy types
+export type DashboardSearch = z.infer<typeof dashboardSearchSchema>;
+export type TransactionQuery = Partial<DashboardSearch>;
 
+export const SORT_FIELDS = {
+    date: 'Dato',
+    amount: 'Mengde',
+    merchant: 'Forhandler',
+    category: 'Kategori',
+} satisfies Record<NonNullable<TransactionQuery['sortBy']>, string>;
+
+// API response types
 export type TransactionResult = {
     data: DbTransaction[];
     totalResults: number;
+    totalIn: number;
+    totalOut: number;
+    unfilteredTotal: number;
 };
 
 export type CategoryStat = {
@@ -18,25 +33,5 @@ export type MonthlyStat = {
     total: string | null;
 };
 
-export type TransactionQuery = {
-    // filtering
-    user?: string[];
-    category?: Category[];
-    minAmt?: number;
-    maxAmt?: number;
-    from?: string;
-    to?: string;
-    merchant?: string;
-    // sorting
-    sortBy?: 'date' | 'amount' | 'merchant' | 'category';
-    sortDir?: 'asc' | 'desc';
-    page?: number;
-    pageSize?: number;
-};
-
-export const SORT_FIELDS = {
-    date: 'Dato',
-    amount: 'Mengde',
-    merchant: 'Forhandler',
-    category: 'Kategori',
-} satisfies Record<NonNullable<TransactionQuery['sortBy']>, string>;
+// re-exports from db
+export type { DbTransaction, User, ValidColor } from '#/db/schema';

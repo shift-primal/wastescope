@@ -12,11 +12,11 @@ import {
     sum,
     sql,
 } from 'drizzle-orm';
-import { transactions } from './schema';
+import { transactions, users } from './schema';
 import { db } from './index.ts';
 export type { TransactionQuery } from '#/types/transactions';
 export { SORT_FIELDS } from '#/types/transactions';
-import type { TransactionQuery } from '#/types/transactions';
+import type { TransactionQuery, ValidColor } from '#/types/transactions';
 
 function buildConditions(query: TransactionQuery = {}) {
     const conditions = [];
@@ -48,22 +48,37 @@ export async function getTransactions(query: TransactionQuery = {}) {
 
     const where = and(...buildConditions(query));
 
-    const [data, [{ totalResults }], [{ totalAmount }]] = await Promise.all([
-        db
-            .select()
-            .from(transactions)
-            .where(where)
-            .orderBy(orderDir)
-            .limit(pageSize)
-            .offset((page - 1) * pageSize),
-        db.select({ totalResults: count() }).from(transactions).where(where),
-        db
-            .select({ totalAmount: sum(transactions.amount) })
-            .from(transactions)
-            .where(where),
-    ]);
+    const [data, [{ totalResults }], [{ totalIn, totalOut }], [{ unfilteredTotal }]] =
+        await Promise.all([
+            db
+                .select()
+                .from(transactions)
+                .where(where)
+                .orderBy(orderDir)
+                .limit(pageSize)
+                .offset((page - 1) * pageSize),
+            db.select({ totalResults: count() }).from(transactions).where(where),
+            db
+                .select({
+                    totalIn: sum(
+                        sql`CASE WHEN ${transactions.amount}::numeric > 0 THEN ${transactions.amount}::numeric ELSE 0 END`,
+                    ),
+                    totalOut: sum(
+                        sql`CASE WHEN ${transactions.amount}::numeric < 0 THEN ${transactions.amount}::numeric ELSE 0 END`,
+                    ),
+                })
+                .from(transactions)
+                .where(where),
+            db.select({ unfilteredTotal: count() }).from(transactions),
+        ]);
 
-    return { data, totalResults, totalAmount: parseFloat(totalAmount ?? '0') };
+    return {
+        data,
+        totalResults,
+        unfilteredTotal,
+        totalIn: parseFloat(totalIn ?? '0'),
+        totalOut: parseFloat(totalOut ?? '0'),
+    };
 }
 
 export async function getAmtBounds() {
@@ -78,11 +93,6 @@ export async function getAmtBounds() {
         minBound: parseFloat(row.minBound ?? '0'),
         maxBound: parseFloat(row.maxBound ?? '0'),
     };
-}
-
-export async function getUsers() {
-    const rows = await db.selectDistinct({ user: transactions.user }).from(transactions);
-    return rows.map((r) => r.user);
 }
 
 export async function getCategoryStats(query: TransactionQuery) {
@@ -110,4 +120,13 @@ export async function getMonthlyStats(query: TransactionQuery) {
         .where(and(where, sql`${transactions.amount} < 0`))
         .groupBy(sql`date_trunc('month', ${transactions.date})`)
         .orderBy(sql`date_trunc('month', ${transactions.date})`);
+}
+
+export async function getUsers() {
+    return await db.select().from(users);
+}
+
+export async function createUser(name: string, color: ValidColor) {
+    const [user] = await db.insert(users).values({ name, color }).returning();
+    return user;
 }

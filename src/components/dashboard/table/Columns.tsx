@@ -57,7 +57,7 @@ const categoryIcons: Record<Category, LucideIcon> = {
 export const columns: ColumnDef<DbTransaction>[] = [
     {
         accessorKey: 'category',
-        header: () => null,
+        header: () => <span className="sr-only">Kategori</span>,
         cell: ({ row }) => {
             const category = row.getValue('category') as Category;
             const Icon = categoryIcons[category];
@@ -74,7 +74,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
 
     {
         accessorKey: 'merchant',
-        header: () => null,
+        header: () => <span className="sr-only">Butikk</span>,
         cell: ({ row }) => {
             const tx = row.original;
             return (
@@ -90,7 +90,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
 
     {
         accessorKey: 'date',
-        header: () => null,
+        header: () => <span className="sr-only">Dato</span>,
         cell: ({ row }) => {
             const date = Date.parse(row.getValue('date'));
             const formattedDate = fmtDate(date, 'd. LLL');
@@ -106,7 +106,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
 
     {
         accessorKey: 'amount',
-        header: () => null,
+        header: () => <span className="sr-only">Beløp</span>,
         cell: ({ row }) => {
             const tx = row.original;
             const amt = Number(row.getValue('amount'));
@@ -126,7 +126,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
 
     {
         accessorKey: 'user',
-        header: () => null,
+        header: () => <span className="sr-only">Bruker</span>,
         size: 80,
         cell: ({ row }) => (
             <div className="flex flex-col items-center justify-center gap-1">
