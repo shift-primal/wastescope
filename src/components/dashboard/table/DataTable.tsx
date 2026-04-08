@@ -2,6 +2,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -9,27 +10,13 @@ import {
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 import { QueryControls } from '../querycontrols/QueryControls';
 import type { DbTransaction } from '#/types/transactions';
-import { fmtAmt, getAmtCn } from '#/lib/tableUtils';
-import { cn } from '#/lib/utils';
+import { PageControls } from '../querycontrols/controls/PageControls';
+import { QueryResults } from './QueryResults';
 
 interface DataTableProps {
     columns: ColumnDef<DbTransaction>[];
     data: DbTransaction[];
     totalResults: number;
-}
-
-function getSums(txs: DbTransaction[]) {
-    const amtIn = Math.round(
-        txs.filter((tx) => Number(tx.amount) > 0).reduce((sum, tx) => sum + Number(tx.amount), 0),
-    );
-    const amtOut = Math.round(
-        txs.filter((tx) => Number(tx.amount) < 0).reduce((sum, tx) => sum + Number(tx.amount), 0),
-    );
-    return {
-        amtIn: { amt: amtIn, header: 'Inn' },
-        amtOut: { amt: amtOut, header: 'Ut' },
-        total: { amt: amtIn + amtOut, header: 'Total' },
-    };
 }
 
 export function DataTable({ columns, data, totalResults }: DataTableProps) {
@@ -47,31 +34,7 @@ export function DataTable({ columns, data, totalResults }: DataTableProps) {
                         <TableHead colSpan={columns.length}>
                             <div className="flex flex-col items-center gap-y-2 py-2 px-4">
                                 <QueryControls />
-                                <div className="flex flex-col items-center gap-y-2 border-t pt-2 w-[80%]">
-                                    <p className="text-xs text-muted-foreground">
-                                        {`Viser ${table.getRowModel().rows.length} av ${totalResults} resultater...`}
-                                    </p>
-                                    <div className="flex w-full items-center justify-center divide-x divide-border">
-                                        {Object.values(getSums(data)).map((d) => (
-                                            <div
-                                                key={d.header}
-                                                className="flex flex-col items-center min-w-18 px-8"
-                                            >
-                                                <span className="text-xs text-muted-foreground">
-                                                    {d.header}
-                                                </span>
-                                                <span
-                                                    className={cn(
-                                                        'text-sm font-medium',
-                                                        getAmtCn(d.amt),
-                                                    )}
-                                                >
-                                                    {fmtAmt(d.amt)}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <QueryResults data={data} totalResults={totalResults} />
                             </div>
                         </TableHead>
                     </TableRow>
@@ -96,6 +59,9 @@ export function DataTable({ columns, data, totalResults }: DataTableProps) {
                         </TableRow>
                     )}
                 </TableBody>
+                <TableFooter className="flex justify-center py-2 bg-transparent">
+                    <PageControls />
+                </TableFooter>
             </Table>
         </div>
     );

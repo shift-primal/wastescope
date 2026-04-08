@@ -1,6 +1,9 @@
-import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field';
-import { useAddTransaction } from '#/hooks/useAddTransaction';
+import { useForm } from '@tanstack/react-form';
+import { useRef } from 'react';
+import { toast } from 'sonner';
 import type { Bank } from 'txcategorizer';
+import * as z from 'zod';
+import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field';
 import {
     Select,
     SelectContent,
@@ -8,14 +11,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '#/components/ui/select';
-import { Input } from './ui/input';
-import { useForm } from '@tanstack/react-form';
-import { toast } from 'sonner';
-import * as z from 'zod';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { useAddTransaction } from '#/hooks/useAddTransaction';
 import { Button } from './ui/button';
-import { useRef } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { InputFile } from './ui/custom/InputFile';
+import { Input } from './ui/input';
 
 const banks = ['dnb', 'valle'] as const;
 
