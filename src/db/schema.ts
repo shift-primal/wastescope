@@ -2,14 +2,17 @@ import { date, numeric, pgEnum, pgTable, serial, text } from 'drizzle-orm/pg-cor
 import { CATEGORIES } from 'txcategorizer';
 
 export const COLOR_OPTIONS = [
-    { label: 'Rød', value: 'red' },
-    { label: 'Oransje', value: 'orange' },
-    { label: 'Gul', value: 'yellow' },
-    { label: 'Grønn', value: 'green' },
-    { label: 'Blå', value: 'blue' },
-    { label: 'Lilla', value: 'purple' },
-    { label: 'Rosa', value: 'pink' },
+    { label: 'Rød', value: 'red', hex: '#ef4444' },
+    { label: 'Oransje', value: 'orange', hex: '#f97316' },
+    { label: 'Gul', value: 'yellow', hex: '#eab308' },
+    { label: 'Grønn', value: 'green', hex: '#22c55e' },
+    { label: 'Blå', value: 'blue', hex: '#3b82f6' },
+    { label: 'Lilla', value: 'purple', hex: '#a855f7' },
+    { label: 'Rosa', value: 'pink', hex: '#ec4899' },
 ] as const;
+
+export const getColorHex = (color: ValidColor): string =>
+    COLOR_OPTIONS.find((c) => c.value === color)?.hex ?? '#888888';
 
 export const validColorsEnum = pgEnum(
     'colors',

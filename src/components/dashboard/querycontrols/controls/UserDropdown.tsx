@@ -1,5 +1,8 @@
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
+import type { User } from '#/db/schema';
+import { getColorHex } from '#/db/schema';
+
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -12,7 +15,7 @@ import {
 import { useSearch } from '@tanstack/react-router';
 import { Users } from 'lucide-react';
 
-export const UserDropdown = ({ allUsers }: { allUsers: string[] }) => {
+export const UserDropdown = ({ allUsers }: { allUsers: User[] }) => {
     const { user: selectedUsers } = useSearch({ from: '/dashboard' });
     const navigate = useDashboardNavigate();
 
@@ -29,19 +32,23 @@ export const UserDropdown = ({ allUsers }: { allUsers: string[] }) => {
                     <DropdownMenuLabel>Filtrer brukere</DropdownMenuLabel>
                     {allUsers.map((user) => (
                         <DropdownMenuCheckboxItem
-                            key={user}
+                            key={user.name}
                             onSelect={(e) => e.preventDefault()}
-                            checked={selectedUsers?.includes(user) ?? false}
+                            checked={selectedUsers?.includes(user.name) ?? false}
                             onCheckedChange={(checked: boolean) => {
                                 navigate((prev: DashboardSearch) => ({
                                     ...prev,
                                     user: checked
-                                        ? [...(prev.user ?? []), user]
-                                        : (prev.user ?? []).filter((c: string) => c !== user),
+                                        ? [...(prev.user ?? []), user.name]
+                                        : (prev.user ?? []).filter((c: string) => c !== user.name),
                                 }));
                             }}
                         >
-                            {user}
+                            <span
+                                className="inline-block size-2 rounded-full shrink-0"
+                                style={{ backgroundColor: getColorHex(user.color) }}
+                            />
+                            {user.name}
                         </DropdownMenuCheckboxItem>
                     ))}
                 </DropdownMenuGroup>

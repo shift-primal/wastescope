@@ -27,8 +27,8 @@ export const ByMonthAreaChart = ({ data }: { data: MonthlyStat[] }) => {
         <Card className="pt-0 w-full">
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
                 <div className="grid flex-1 gap-1">
-                    <CardTitle>Total mengde pr. mnd</CardTitle>
-                    <CardDescription>Viser total mengde for valgte transaksjoner</CardDescription>
+                    <CardTitle>Utgifter pr. måned</CardTitle>
+                    <CardDescription>Kun utgifter (negative transaksjoner)</CardDescription>
                 </div>
             </CardHeader>
             <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">

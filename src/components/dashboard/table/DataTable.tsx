@@ -12,6 +12,7 @@ import { QueryControls } from '../querycontrols/QueryControls';
 import type { DbTransaction } from '#/types/transactions';
 import { PageControls } from '../querycontrols/controls/PageControls';
 import { QueryResults } from './QueryResults';
+import { useUsers } from '#/hooks/useUsers';
 
 interface DataTableProps {
     columns: ColumnDef<DbTransaction>[];
@@ -37,10 +38,14 @@ export function DataTable({
     totalOut,
     unfilteredTotal,
 }: DataTableProps) {
+    const { data: users } = useUsers();
+    const colorMap = Object.fromEntries(users?.map((u) => [u.name, u.color]) ?? []);
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        meta: { colorMap },
     });
 
     const stats: Stats[] = [

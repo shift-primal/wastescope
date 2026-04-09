@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
 
 export const MerchantSearch = () => {
     const navigate = useDashboardNavigate();

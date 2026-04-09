@@ -29,8 +29,8 @@ export const ByCategoryDonutChart = ({ data }: { data: CategoryStat[] }) => {
     return (
         <Card className="flex flex-col w-full">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Total mengde pr. kategori</CardTitle>
-                <CardDescription>Viser total mengde for valgte transaksjoner</CardDescription>
+                <CardTitle>Utgifter pr. kategori</CardTitle>
+                <CardDescription>Kun utgifter (negative transaksjoner)</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer config={chartConfig} className="h-48 w-full">

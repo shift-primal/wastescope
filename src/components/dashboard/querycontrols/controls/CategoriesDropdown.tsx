@@ -1,5 +1,5 @@
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,

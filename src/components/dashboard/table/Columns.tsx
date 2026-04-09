@@ -1,7 +1,7 @@
 import { format as fmtDate } from 'date-fns';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { Category } from 'txcategorizer';
-import type { DbTransaction } from '#/types/transactions';
+import type { DbTransaction, ValidColor } from '#/types/transactions';
 import {
     ArrowRightLeft,
     BedDouble,
@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '#/components/ui/badge';
 import { fmtAmt, getAmtCn } from '#/lib/tableUtils';
+import { getColorHex } from '#/db/schema';
 
 const categoryIcons: Record<Category, LucideIcon> = {
     'Dagligvare': ShoppingBasket,
@@ -128,13 +129,21 @@ export const columns: ColumnDef<DbTransaction>[] = [
         accessorKey: 'user',
         header: () => <span className="sr-only">Bruker</span>,
         size: 80,
-        cell: ({ row }) => (
-            <div className="flex flex-col items-center justify-center gap-1">
-                <User size={14} />
-                <Badge variant="outline" className="text-[0.7rem] px-1 py-0 h-4 bg-pink-900">
-                    {row.getValue('user')}
-                </Badge>
-            </div>
-        ),
+        cell: ({ row, table }) => {
+            const { colorMap } = table.options.meta as { colorMap: Record<string, ValidColor> };
+            const color = colorMap[row.getValue('user') as string];
+            return (
+                <div className="flex flex-col items-center justify-center gap-1">
+                    <User size={14} />
+                    <Badge
+                        variant="outline"
+                        className="text-[0.7rem] px-1 py-0 h-4"
+                        style={{ backgroundColor: getColorHex(color) }}
+                    >
+                        {row.getValue('user')}
+                    </Badge>
+                </div>
+            );
+        },
     },
 ];

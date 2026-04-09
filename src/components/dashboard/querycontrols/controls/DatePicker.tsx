@@ -6,7 +6,7 @@ import { format as fmtDate, endOfMonth, startOfMonth } from 'date-fns';
 import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
 

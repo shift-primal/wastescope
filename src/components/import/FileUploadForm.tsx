@@ -31,8 +31,13 @@ export const FileUploadForm = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleSubmit({ value }: { value: { file: File; bank: Bank; user: string } }) {
-        uploadFile({ file: value.file, bank: value.bank, user: value.user });
-        toast.success('Transactions imported!');
+        uploadFile(
+            { file: value.file, bank: value.bank, user: value.user },
+            {
+                onSuccess: () => toast.success('Fil importert!'),
+                onError: () => toast.error('Noe gikk galt.'),
+            },
+        );
     }
 
     const form = useForm({
@@ -42,7 +47,7 @@ export const FileUploadForm = () => {
             user: '',
         },
         validators: {
-            onBlur: uploadFormSchema,
+            onSubmit: uploadFormSchema,
         },
         onSubmit: async ({ value }) => handleSubmit({ value }),
     });
@@ -141,37 +146,40 @@ export const FileUploadForm = () => {
                                         >
                                             Velg bruker...
                                         </FieldLabel>
-                                        <Select
-                                            name={field.name}
-                                            value={field.state.value}
-                                            onValueChange={(value) =>
-                                                field.handleChange(value as string)
-                                            }
-                                            aria-invalid={isInvalid}
-                                        >
-                                            <SelectTrigger
-                                                id={field.name}
-                                                className="hover:cursor-pointer hover:bg-input/10"
+                                        <div className="flex gap-x-4 justify-between">
+                                            <Select
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onValueChange={(value) =>
+                                                    field.handleChange(value as string)
+                                                }
+                                                aria-invalid={isInvalid}
                                             >
-                                                <SelectValue placeholder="Ola Nordmann..." />
-                                            </SelectTrigger>
-                                            <SelectContent position="popper">
-                                                {users?.length ? (
-                                                    users.map((user) => (
-                                                        <SelectItem
-                                                            key={user.name}
-                                                            value={user.name}
-                                                        >
-                                                            {user.name}
-                                                        </SelectItem>
-                                                    ))
-                                                ) : (
-                                                    <div className="py-2 px-3 text-sm text-muted-foreground">
-                                                        Ingen brukere funnet
-                                                    </div>
-                                                )}
-                                            </SelectContent>
-                                        </Select>
+                                                <SelectTrigger
+                                                    id={field.name}
+                                                    className="hover:cursor-pointer hover:bg-input/10 w-full"
+                                                >
+                                                    <SelectValue placeholder="Ola Nordmann..." />
+                                                </SelectTrigger>
+                                                <SelectContent position="popper">
+                                                    {users?.length ? (
+                                                        users.map((user) => (
+                                                            <SelectItem
+                                                                key={user.name}
+                                                                value={user.name}
+                                                            >
+                                                                {user.name}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <div className="py-2 px-3 text-sm text-muted-foreground">
+                                                            Ingen brukere funnet
+                                                        </div>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                            <CreateNewUser />
+                                        </div>
                                         {isInvalid && (
                                             <FieldError errors={field.state.meta.errors} />
                                         )}
@@ -200,7 +208,6 @@ export const FileUploadForm = () => {
                     </CardFooter>
                 )}
             />
-            <CreateNewUser />
         </Card>
     );
 };

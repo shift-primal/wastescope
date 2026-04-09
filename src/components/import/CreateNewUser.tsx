@@ -21,6 +21,7 @@ import {
     SelectValue,
 } from '#/components/ui/select';
 import { createUserSchema } from '#/lib/validators';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export const CreateNewUser = () => {
     const { mutate: createUser, isPending: userPending } = useAddUser();
@@ -49,9 +50,14 @@ export const CreateNewUser = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Plus />
-                </Button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button variant="outline">
+                            <Plus />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Opprett ny bruker</TooltipContent>
+                </Tooltip>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

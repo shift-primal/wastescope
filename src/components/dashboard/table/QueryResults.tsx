@@ -3,7 +3,6 @@ import { cn } from '#/lib/utils';
 import type { Stats } from './DataTable';
 
 export const QueryResults = ({ stats }: { stats: Stats[] }) => {
-    console.log(stats);
     return (
         <div className="flex items-center justify-center border-t pt-2 divide-x divide-border">
             {stats.map((d) => (

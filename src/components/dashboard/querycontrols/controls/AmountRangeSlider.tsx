@@ -1,6 +1,6 @@
 import { Slider } from '#/components/ui/slider';
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
 import { useSearch } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';

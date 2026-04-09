@@ -1,7 +1,7 @@
 import { Label } from '#/components/ui/label';
 import { Switch } from '#/components/ui/switch';
 import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
-import type { DashboardSearch } from '#/routes/dashboard';
+import type { DashboardSearch } from '#/types/transactions';
 import { SORT_FIELDS } from '#/types/transactions';
 import { Button } from '@/components/ui/button';
 import {
