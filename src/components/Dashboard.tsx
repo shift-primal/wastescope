@@ -18,7 +18,7 @@ export function Dashboard({
     const { data: txData, totalResults, unfilteredTotal, totalIn, totalOut } = txResult;
 
     return (
-        <div className={cn('p-6 flex flex-col items-center gap-y-4 max-w-7xl mx-auto', className)}>
+        <div className={cn('p-3 sm:p-6 flex flex-col items-center gap-y-4 max-w-7xl mx-auto w-full', className)}>
             <DataCharts monthlyStats={monthlyStats} categoryStats={categoryStats} />
             <DataTable
                 columns={columns}

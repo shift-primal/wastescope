@@ -51,9 +51,12 @@ export const DatePicker = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="justify-start px-2.5 font-normal w-46">
+                <Button variant="outline" className="justify-start px-2.5 font-normal w-full md:w-auto">
                     <CalendarIcon className="size-3.5" />
-                    <span className="text-center w-full">
+                    <span className="text-center w-full sm:hidden">
+                        {fmtDate(from, 'LLL yy')} – {fmtDate(to, 'LLL yy')}
+                    </span>
+                    <span className="text-center w-full hidden sm:inline">
                         {fmtDate(from, 'LLL y')} – {fmtDate(to, 'LLL y')}
                     </span>
                 </Button>

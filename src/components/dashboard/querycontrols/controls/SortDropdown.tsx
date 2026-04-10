@@ -41,7 +41,7 @@ export const SortDropdown = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="font-normal">
+                <Button variant="outline" className="font-normal w-full md:w-auto">
                     <ArrowUpDown className="size-3.5" />
                     <span>Sorter</span>
                 </Button>

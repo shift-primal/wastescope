@@ -10,7 +10,7 @@ export const DataCharts = ({
     categoryStats: CategoryStat[];
 }) => {
     return (
-        <div id="charts" className="flex justify-between w-full gap-x-8">
+        <div id="charts" className="flex flex-col md:flex-row w-full gap-4 md:gap-x-8">
             <ByMonthAreaChart data={monthlyStats} />
             <ByCategoryDonutChart data={categoryStats} />
         </div>

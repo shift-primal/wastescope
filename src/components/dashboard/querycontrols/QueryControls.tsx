@@ -16,22 +16,28 @@ export const QueryControls = () => {
     const { data: allUsers } = useUsers();
 
     return (
-        <div id="query-controls-container" className="flex flex-col gap-y-4 py-2 w-full">
-            <div
-                className="flex justify-between items-center
-				gap-x-6"
-            >
-                <div className="flex gap-x-3">
+        <div id="query-controls-container" className="flex flex-col gap-y-3 py-2 w-full">
+            <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-x-3 w-full">
+                <div className="grid grid-cols-2 md:flex gap-2 md:shrink-0">
                     {allUsers && <UserDropdown allUsers={allUsers} />}
                     <CategoriesDropdown />
                 </div>
-                <Separator orientation="vertical" className="min-h-8" />
-                <MerchantSearch key={merchant ?? ''} />
-                <Separator orientation="vertical" className="min-h-8" />
-                <DatePicker />
-                <Separator orientation="vertical" className="min-h-8" />
-                <div className="flex gap-x-3">
-                    <SortDropdown />
+                <Separator orientation="vertical" className="hidden md:block min-h-8 shrink-0" />
+                <div className="grid grid-cols-2 md:contents gap-2 w-full">
+                    <div className="flex-1 min-w-0">
+                        <MerchantSearch key={merchant ?? ''} />
+                    </div>
+                    <Separator
+                        orientation="vertical"
+                        className="hidden md:block min-h-8 shrink-0"
+                    />
+                    <DatePicker />
+                </div>
+                <Separator orientation="vertical" className="hidden md:block min-h-8 shrink-0" />
+                <div className="flex gap-2 md:shrink-0">
+                    <div className="flex-1 md:flex-none">
+                        <SortDropdown />
+                    </div>
                     <ClearFiltersButton />
                 </div>
             </div>

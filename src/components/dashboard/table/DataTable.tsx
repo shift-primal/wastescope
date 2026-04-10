@@ -3,8 +3,6 @@ import {
     TableBody,
     TableCell,
     TableFooter,
-    TableHead,
-    TableHeader,
     TableRow,
 } from '#/components/ui/table';
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
@@ -57,45 +55,44 @@ export function DataTable({
 
     return (
         <div className="overflow-hidden rounded-md border flex flex-col w-full">
-            <Table className="[&_tbody_tr]:grid [&_tbody_tr]:grid-cols-[4rem_1fr_auto_auto_auto] [&_tbody_tr]:items-center">
-                <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                        <TableHead colSpan={columns.length}>
-                            <div className="flex flex-col items-center gap-y-2 py-2 px-4">
-                                <QueryControls />
-                                <QueryResults stats={stats} />
-                            </div>
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {table.getRowModel().rows?.length ? (
-                        table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell
-                                        key={cell.id}
-                                        style={{ width: cell.column.getSize() }}
-                                    >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
+            {/* Controls — always full width, does not scroll */}
+            <div className="flex flex-col items-center gap-y-2 py-2 px-4 border-b">
+                <QueryControls />
+                <QueryResults stats={stats} />
+            </div>
+
+            {/* Table body — scrolls horizontally on small screens */}
+            <div className="overflow-x-auto">
+                <Table className="min-w-[500px] [&_tbody_tr]:grid [&_tbody_tr]:grid-cols-[4rem_1fr_auto_auto_auto] [&_tbody_tr]:items-center">
+                    <TableBody>
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            style={{ width: cell.column.getSize() }}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length}>No results.</TableCell>
                             </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length}>No results.</TableCell>
+                        )}
+                    </TableBody>
+                    <TableFooter className="flex justify-center py-2 bg-transparent">
+                        <TableRow className="hover:bg-transparent">
+                            <TableCell colSpan={columns.length}>
+                                <PageControls />
+                            </TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-                <TableFooter className="flex justify-center py-2 bg-transparent">
-                    <TableRow className="hover:bg-transparent">
-                        <TableCell colSpan={columns.length}>
-                            <PageControls />
-                        </TableCell>
-                    </TableRow>
-                </TableFooter>
-            </Table>
+                    </TableFooter>
+                </Table>
+            </div>
         </div>
     );
 }

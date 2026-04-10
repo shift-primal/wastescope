@@ -16,7 +16,8 @@ export const InputFile = ({ inputRef, field }: Props) => {
     }
 
     return (
-        <div id="file-selection" className="flex gap-x-4">
+        <div id="file-selection" className="flex flex-col gap-y-1">
+        <div className="flex gap-x-4">
             <input
                 ref={inputRef}
                 type="file"
@@ -48,6 +49,8 @@ export const InputFile = ({ inputRef, field }: Props) => {
                 </TooltipTrigger>
                 <TooltipContent>Reset fil...</TooltipContent>
             </Tooltip>
+        </div>
+        <span className="text-xs text-muted-foreground">.csv eller .txt</span>
         </div>
     );
 };

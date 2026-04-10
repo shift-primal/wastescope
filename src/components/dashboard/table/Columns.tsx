@@ -59,12 +59,15 @@ export const columns: ColumnDef<DbTransaction>[] = [
     {
         accessorKey: 'category',
         header: () => <span className="sr-only">Kategori</span>,
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const category = row.getValue('category') as Category;
             const Icon = categoryIcons[category];
+            const { colorMap } = table.options.meta as { colorMap: Record<string, ValidColor> };
+            const color = colorMap[row.getValue('user') as string];
             return (
                 <Badge
-                    className="w-8 h-8 rounded-lg text-purple-300 bg-purple-950/10"
+                    className="w-8 h-8 rounded-lg text-white"
+                    style={{ backgroundColor: getColorHex(color) }}
                     variant="outline"
                 >
                     <Icon />
@@ -137,7 +140,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
                     <User size={14} />
                     <Badge
                         variant="outline"
-                        className="text-[0.7rem] px-1 py-0 h-4"
+                        className="text-[0.7rem] px-2 text-white"
                         style={{ backgroundColor: getColorHex(color) }}
                     >
                         {row.getValue('user')}

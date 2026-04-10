@@ -15,10 +15,7 @@ import { Button } from '#/components/ui/button';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from '#/components/ui/card';
 import { InputFile } from '#/components/ui/custom/InputFile';
 import { useUsers } from '#/hooks/useUsers';
@@ -55,12 +52,8 @@ export const FileUploadForm = () => {
     const { data: users } = useUsers();
 
     return (
-        <Card className="border-2 flex w-fit h-max p-12 min-w-96 self-center mx-auto flex-col gap-y-8 ring-foreground/10 bg-card text-card-foreground rounded-lg mt-8">
-            <CardHeader>
-                <CardTitle>Importer transaksjoner</CardTitle>
-                <CardDescription>Kun (.csv) eller (.txt) filer</CardDescription>
-            </CardHeader>
-            <CardContent>
+        <Card className="border-2 flex w-full sm:w-fit h-max p-6 sm:p-10 sm:min-w-96 self-center mx-auto flex-col gap-y-6 ring-foreground/10 bg-card text-card-foreground rounded-lg">
+            <CardContent className="p-0">
                 <form
                     id="upload-form"
                     autoComplete="off"
@@ -194,7 +187,7 @@ export const FileUploadForm = () => {
             <form.Subscribe
                 selector={(state) => state.canSubmit && state.isDirty}
                 children={(canSubmit) => (
-                    <CardFooter>
+                    <CardFooter className="p-0 pt-2">
                         <Field orientation="horizontal">
                             <Button
                                 className="w-full"
