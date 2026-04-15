@@ -18,7 +18,7 @@ const ThumbWithBadge = ({
     instant: boolean;
     formatValue?: (val: number) => string;
 }) => (
-    <SliderPrimitive.Thumb className="group block size-4 shrink-0 rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 relative">
+    <SliderPrimitive.Thumb className="group block size-4 shrink-0 rounded-full border border-accent bg-white shadow-md ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 relative">
         <Badge
             className={cn(
                 'origin-top absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none whitespace-nowrap',

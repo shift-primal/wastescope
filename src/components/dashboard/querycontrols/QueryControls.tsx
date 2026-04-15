@@ -41,9 +41,14 @@ export const QueryControls = () => {
                     <ClearFiltersButton />
                 </div>
             </div>
-            {amtBounds && (
-                <AmountRangeSlider key={`${minAmt ?? ''}-${maxAmt ?? ''}`} amtBounds={amtBounds} />
-            )}
+            <div className="px-4">
+                {amtBounds && (
+                    <AmountRangeSlider
+                        key={`${minAmt ?? ''}-${maxAmt ?? ''}`}
+                        amtBounds={amtBounds}
+                    />
+                )}
+            </div>
         </div>
     );
 };

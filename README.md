@@ -7,7 +7,7 @@ A personal finance tracker for Norwegian bank CSV exports. Import transactions f
 ## Features
 
 - **CSV import** — supports DNB and Eika/Valle export formats
-- **Automatic categorisation** — rule-based parser extracts merchant and category from raw bank descriptions (100% match rate on test data)
+- **Automatic categorisation** — powered by [txcategorizer](https://github.com/shift-primal/txcategorizer), a custom-built rule-based parser that extracts merchant and category from raw bank descriptions (100% match rate on test data)
 - **Dashboard** — filterable transaction table with sorting, pagination, and date range selection
 - **Charts** — monthly spending area chart and category breakdown donut chart
 - **Multi-user** — track multiple people's finances with per-user colour coding
@@ -15,16 +15,17 @@ A personal finance tracker for Norwegian bank CSV exports. Import transactions f
 
 ## Tech stack
 
-| Layer | Technology |
-|-------|------------|
-| Framework | [TanStack Start](https://tanstack.com/start) (SSR) |
-| Routing | [TanStack Router](https://tanstack.com/router) |
-| Server state | [TanStack Query](https://tanstack.com/query) |
-| ORM | [Drizzle ORM](https://orm.drizzle.team) |
-| Database | PostgreSQL 17 |
-| UI | React 19, Tailwind CSS 4, shadcn/ui |
-| Charts | Recharts |
-| Validation | Zod, TanStack Form |
+| Layer        | Technology                                                                    |
+| ------------ | ----------------------------------------------------------------------------- |
+| Framework    | [TanStack Start](https://tanstack.com/start) (SSR)                            |
+| Routing      | [TanStack Router](https://tanstack.com/router)                                |
+| Server state | [TanStack Query](https://tanstack.com/query)                                  |
+| ORM          | [Drizzle ORM](https://orm.drizzle.team)                                       |
+| Database     | PostgreSQL 17                                                                 |
+| UI           | React 19, Tailwind CSS 4, shadcn/ui                                           |
+| Parser       | [txcategorizer](https://github.com/shift-primal/txcategorizer) (custom-built) |
+| Charts       | Recharts                                                                      |
+| Validation   | Zod, TanStack Form                                                            |
 
 ---
 
@@ -70,38 +71,3 @@ pnpm db:seed
 ```
 
 This creates 2 demo users (Alex and Sam) with ~300 transactions across 12 months covering all spending categories.
-
----
-
-## Deployment (Railway)
-
-1. Create a new project on [Railway](https://railway.app)
-2. Add a **PostgreSQL** plugin to the project
-3. Connect your GitHub repo
-4. Set environment variables:
-   - `DATABASE_URL` — copied from the Postgres plugin
-   - `BETTER_AUTH_SECRET` — any random 32-character string
-   - `NODE_ENV` — `production`
-5. Deploy — Railway will build with nixpacks and run migrations automatically on start
-
----
-
-## Project structure
-
-```
-src/
-  routes/          # File-based routes (pages + API handlers)
-  components/      # UI components
-    dashboard/     # Charts, table, filter controls
-    import/        # CSV upload form
-    layout/        # Header, footer
-  db/
-    schema.ts      # Drizzle schema
-    txQueries.ts   # Database query functions
-  hooks/           # React Query hooks
-  types/           # Shared TypeScript types
-  lib/             # Utilities and validators
-scripts/
-  seed.ts          # Demo data seed script
-parser/            # Standalone Deno CSV parser (DNB + Eika/Valle)
-```

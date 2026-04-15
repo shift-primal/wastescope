@@ -97,6 +97,9 @@ export async function getAmtBounds() {
 
 export async function getCategoryStats(query: TransactionQuery) {
     const where = and(...buildConditions(query));
+    const sign = query.minAmt !== undefined && query.minAmt > 0
+        ? sql`${transactions.amount} > 0`
+        : sql`${transactions.amount} < 0`;
 
     return await db
         .select({
@@ -104,12 +107,15 @@ export async function getCategoryStats(query: TransactionQuery) {
             total: sum(transactions.amount),
         })
         .from(transactions)
-        .where(and(where, sql`${transactions.amount} < 0`))
+        .where(and(where, sign))
         .groupBy(transactions.category);
 }
 
 export async function getMonthlyStats(query: TransactionQuery) {
     const where = and(...buildConditions(query));
+    const sign = query.minAmt !== undefined && query.minAmt > 0
+        ? sql`${transactions.amount} > 0`
+        : sql`${transactions.amount} < 0`;
 
     return await db
         .select({
@@ -117,9 +123,43 @@ export async function getMonthlyStats(query: TransactionQuery) {
             total: sum(transactions.amount),
         })
         .from(transactions)
-        .where(and(where, sql`${transactions.amount} < 0`))
+        .where(and(where, sign))
         .groupBy(sql`date_trunc('month', ${transactions.date})`)
         .orderBy(sql`date_trunc('month', ${transactions.date})`);
+}
+
+export async function getMonthlyStatsByUser(query: TransactionQuery) {
+    const where = and(...buildConditions(query));
+    const sign = query.minAmt !== undefined && query.minAmt > 0
+        ? sql`${transactions.amount} > 0`
+        : sql`${transactions.amount} < 0`;
+
+    return await db
+        .select({
+            month: sql<string>`to_char(date_trunc('month', ${transactions.date}), 'YYYY-MM')`,
+            user: transactions.user,
+            total: sum(transactions.amount),
+        })
+        .from(transactions)
+        .where(and(where, sign))
+        .groupBy(sql`date_trunc('month', ${transactions.date})`, transactions.user)
+        .orderBy(sql`date_trunc('month', ${transactions.date})`);
+}
+
+export async function getUserStats(query: TransactionQuery) {
+    const where = and(...buildConditions(query));
+    const sign = query.minAmt !== undefined && query.minAmt > 0
+        ? sql`${transactions.amount} > 0`
+        : sql`${transactions.amount} < 0`;
+
+    return await db
+        .select({
+            user: transactions.user,
+            total: sum(transactions.amount),
+        })
+        .from(transactions)
+        .where(and(where, sign))
+        .groupBy(transactions.user);
 }
 
 export async function getUsers() {

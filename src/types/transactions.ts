@@ -33,5 +33,16 @@ export type MonthlyStat = {
     total: string | null;
 };
 
+export type MonthlyStatByUser = {
+    month: string;
+    user: string;
+    total: string | null;
+};
+
+export type UserStat = {
+    user: string;
+    total: string | null;
+};
+
 // re-exports from db
 export type { DbTransaction, User, ValidColor } from '#/db/schema';

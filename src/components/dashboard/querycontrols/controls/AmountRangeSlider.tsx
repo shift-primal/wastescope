@@ -5,14 +5,11 @@ import { useSearch } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-// Maps a real value to [0, 1000] slider space, 0 always at 500.
-// Each side independently scales to its bound.
 function toSlider(value: number, minBound: number, maxBound: number): number {
     if (value <= 0) return 500 + (value / Math.abs(minBound || 1)) * 500;
     return 500 + (value / (maxBound || 1)) * 500;
 }
 
-// Maps [0, 1000] slider position back to real value.
 function fromSlider(pos: number, minBound: number, maxBound: number): number {
     if (pos <= 500) return ((pos - 500) / 500) * Math.abs(minBound || 1);
     return ((pos - 500) / 500) * (maxBound || 1);
@@ -51,13 +48,25 @@ export const AmountRangeSlider = ({
     const [sMin, sMax] = sliderValue;
 
     const trackSegments = [
-        // Red: selected negative range
+        // negative range
         ...(sMin < 500
-            ? [{ fromPct: (sMin / 1000) * 100, toPct: (Math.min(sMax, 500) / 1000) * 100, className: 'bg-destructive/70' }]
+            ? [
+                  {
+                      fromPct: (sMin / 1000) * 100,
+                      toPct: (Math.min(sMax, 500) / 1000) * 100,
+                      className: 'bg-destructive/70',
+                  },
+              ]
             : []),
-        // Green: selected positive range
+        // Selected positive range
         ...(sMax > 500
-            ? [{ fromPct: (Math.max(sMin, 500) / 1000) * 100, toPct: (sMax / 1000) * 100, className: 'bg-green-500/70' }]
+            ? [
+                  {
+                      fromPct: (Math.max(sMin, 500) / 1000) * 100,
+                      toPct: (sMax / 1000) * 100,
+                      className: 'bg-green-500/70',
+                  },
+              ]
             : []),
     ];
 

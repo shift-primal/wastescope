@@ -1,25 +1,44 @@
 import { cn } from '#/lib/utils';
-import type { CategoryStat, MonthlyStat, TransactionResult } from '#/types/transactions';
+import type {
+    CategoryStat,
+    MonthlyStatByUser,
+    TransactionResult,
+    UserStat,
+} from '#/types/transactions';
 import { DataCharts } from './dashboard/charts/DataCharts';
 import { columns } from './dashboard/table/Columns';
 import { DataTable } from './dashboard/table/DataTable';
 
 export function Dashboard({
     txResult,
-    monthlyStats,
     categoryStats,
+    monthlyStatsByUser,
+    userStats,
+    isLoading = false,
     className,
 }: {
     txResult: TransactionResult;
-    monthlyStats: MonthlyStat[];
     categoryStats: CategoryStat[];
-    className: string;
+    monthlyStatsByUser?: MonthlyStatByUser[];
+    userStats?: UserStat[];
+    isLoading?: boolean;
+    className?: string;
 }) {
     const { data: txData, totalResults, unfilteredTotal, totalIn, totalOut } = txResult;
 
     return (
-        <div className={cn('p-3 sm:p-6 flex flex-col items-center gap-y-4 max-w-7xl mx-auto w-full', className)}>
-            <DataCharts monthlyStats={monthlyStats} categoryStats={categoryStats} />
+        <div
+            className={cn(
+                'p-3 sm:p-6 flex flex-col items-center gap-y-4 max-w-7xl mx-auto w-full',
+                className,
+            )}
+        >
+            <DataCharts
+                categoryStats={categoryStats}
+                monthlyStatsByUser={monthlyStatsByUser}
+                userStats={userStats}
+                isLoading={isLoading}
+            />
             <DataTable
                 columns={columns}
                 data={txData}
@@ -27,6 +46,7 @@ export function Dashboard({
                 unfilteredTotal={unfilteredTotal}
                 totalIn={totalIn}
                 totalOut={totalOut}
+                isLoading={isLoading}
             />
         </div>
     );

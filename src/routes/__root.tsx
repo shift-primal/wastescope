@@ -1,12 +1,8 @@
 import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router';
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { TanStackDevtools } from '@tanstack/react-devtools';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 import { TooltipProvider } from '#/components/ui/tooltip';
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider';
-
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 
 import appCss from '../css/styles.css?url';
 
@@ -58,20 +54,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                         <main className="flex-1">{children}</main>
                         <Toaster />
                         <Footer />
-                        {import.meta.env.DEV && (
-                            <TanStackDevtools
-                                config={{
-                                    position: 'bottom-right',
-                                }}
-                                plugins={[
-                                    {
-                                        name: 'Tanstack Router',
-                                        render: <TanStackRouterDevtoolsPanel />,
-                                    },
-                                    TanStackQueryDevtools,
-                                ]}
-                            />
-                        )}
                     </TooltipProvider>
                 </TanStackQueryProvider>
                 <Scripts />
