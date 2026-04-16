@@ -5,9 +5,9 @@ import type {
     TransactionResult,
     UserStat,
 } from '#/types/transactions';
-import { DataCharts } from './dashboard/charts/DataCharts';
-import { columns } from './dashboard/table/Columns';
-import { DataTable } from './dashboard/table/DataTable';
+import { DataCharts } from './charts/DataCharts';
+import { columns } from './table/Columns';
+import { DataTable } from './table/DataTable';
 
 export function Dashboard({
     txResult,

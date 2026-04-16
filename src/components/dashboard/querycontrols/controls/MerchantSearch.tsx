@@ -3,7 +3,7 @@ import { useSearch } from '@tanstack/react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
-import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import { useDashboardNavigate } from '#/hooks/dashboard/useDashboardNavigate';
 import type { DashboardSearch } from '#/types/transactions';
 
 export const MerchantSearch = () => {

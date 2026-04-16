@@ -28,11 +28,6 @@ export type CategoryStat = {
     total: string | null;
 };
 
-export type MonthlyStat = {
-    month: string;
-    total: string | null;
-};
-
 export type MonthlyStatByUser = {
     month: string;
     user: string;

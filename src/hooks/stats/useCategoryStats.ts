@@ -1,5 +1,5 @@
 import type { TransactionQuery, CategoryStat } from '#/types/transactions';
-import { client } from '#/services/apiclient';
+import { client } from '#/lib/apiclient';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCategoryStats = (query?: TransactionQuery) => {

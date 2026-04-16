@@ -1,5 +1,5 @@
 import { Slider } from '#/components/ui/slider';
-import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import { useDashboardNavigate } from '#/hooks/dashboard/useDashboardNavigate';
 import type { DashboardSearch } from '#/types/transactions';
 import { useSearch } from '@tanstack/react-router';
 import { useRef, useState } from 'react';

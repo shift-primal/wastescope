@@ -1,5 +1,5 @@
 import type { User } from '#/db/schema';
-import { client } from '#/services/apiclient';
+import { client } from '#/lib/apiclient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useAddUser = () => {

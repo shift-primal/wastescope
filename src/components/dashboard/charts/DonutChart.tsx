@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/chart';
 import type { CategoryStat, UserStat } from '#/types/transactions';
 import { catToKey, parseAmt } from '#/lib/tableUtils';
-import { useUsers } from '#/hooks/useUsers';
+import { useUsers } from '#/hooks/user/useUsers';
 import { getColorHex } from '#/db/schema';
 import type React from 'react';
 

@@ -9,7 +9,7 @@ import {
 import type { MonthlyStatByUser } from '#/types/transactions';
 import { formatDate as fmtDate } from 'date-fns';
 import { parseAmt, catToKey } from '#/lib/tableUtils';
-import { useUsers } from '#/hooks/useUsers';
+import { useUsers } from '#/hooks/user/useUsers';
 import { getColorHex } from '#/db/schema';
 
 export const ByMonthAreaChart = ({

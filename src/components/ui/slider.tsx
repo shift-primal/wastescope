@@ -91,7 +91,6 @@ function Slider({
                         style={{ left: `${seg.fromPct}%`, width: `${seg.toPct - seg.fromPct}%` }}
                     />
                 ))}
-                {/* Zero center marker */}
                 {trackSegments && (
                     <div
                         className="absolute h-full w-0.5 -translate-x-1/2 bg-muted-foreground/40"

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
-import { useAddUser } from '#/hooks/useAddUser';
+import { useAddUser } from '#/hooks/user/useAddUser';
 import { COLOR_OPTIONS, type User, type ValidColor } from '#/db/schema';
 import { toast } from 'sonner';
 import { useForm } from '@tanstack/react-form';

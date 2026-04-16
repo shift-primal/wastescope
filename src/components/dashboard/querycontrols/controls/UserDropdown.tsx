@@ -1,4 +1,4 @@
-import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import { useDashboardNavigate } from '#/hooks/dashboard/useDashboardNavigate';
 import type { DashboardSearch } from '#/types/transactions';
 import type { User } from '#/db/schema';
 import { getColorHex } from '#/db/schema';

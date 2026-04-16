@@ -1,41 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { processTransactions, type Bank, type Category } from 'txcategorizer';
+import { processTransactions, type Bank } from 'txcategorizer';
 import { db } from '#/db';
 import { transactions } from '#/db/schema';
 import { sql } from 'drizzle-orm';
-import { getTransactions, type TransactionQuery } from '#/db/txQueries';
+import { getTransactions } from '#/db/txQueries';
+import { parseTransactionQuery } from '#/lib/parseQuery';
 
 export const Route = createFileRoute('/api/transactions/')({
     server: {
         handlers: {
             GET: async ({ request }) => {
-                const url = new URL(request.url);
-
-                const query = {
-                    user: url.searchParams.getAll('user') as string[],
-                    category: url.searchParams.getAll('category') as Category[],
-                    merchant: url.searchParams.get('merchant') ?? undefined,
-                    minAmt: url.searchParams.get('minAmt')
-                        ? Number(url.searchParams.get('minAmt'))
-                        : undefined,
-                    maxAmt: url.searchParams.get('maxAmt')
-                        ? Number(url.searchParams.get('maxAmt'))
-                        : undefined,
-                    from: url.searchParams.get('from') ?? undefined,
-                    to: url.searchParams.get('to') ?? undefined,
-                    sortBy:
-                        (url.searchParams.get('sortBy') as TransactionQuery['sortBy']) ?? undefined,
-                    sortDir:
-                        (url.searchParams.get('sortDir') as TransactionQuery['sortDir']) ??
-                        undefined,
-                    page: url.searchParams.get('page')
-                        ? Number(url.searchParams.get('page'))
-                        : undefined,
-                    pageSize: url.searchParams.get('pageSize')
-                        ? Number(url.searchParams.get('pageSize'))
-                        : undefined,
-                };
-
+                const query = parseTransactionQuery(new URL(request.url));
                 return Response.json(await getTransactions(query));
             },
 

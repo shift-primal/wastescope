@@ -1,4 +1,4 @@
-import { client } from '#/services/apiclient';
+import { client } from '#/lib/apiclient';
 import { useQuery } from '@tanstack/react-query';
 
 export const useAmtBounds = () => {

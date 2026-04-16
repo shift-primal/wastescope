@@ -1,4 +1,4 @@
-import { client } from '#/services/apiclient';
+import { client } from '#/lib/apiclient';
 import { useMutation } from '@tanstack/react-query';
 import type { Bank } from 'txcategorizer';
 

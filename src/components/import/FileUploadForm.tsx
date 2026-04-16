@@ -10,15 +10,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '#/components/ui/select';
-import { useAddTransaction } from '#/hooks/useAddTransaction';
+import { useAddTransaction } from '#/hooks/transactions/useAddTransaction';
 import { Button } from '#/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-} from '#/components/ui/card';
+import { Card, CardContent, CardFooter } from '#/components/ui/card';
 import { InputFile } from '#/components/ui/custom/InputFile';
-import { useUsers } from '#/hooks/useUsers';
+import { useUsers } from '#/hooks/user/useUsers';
 import { CreateNewUser } from './CreateNewUser';
 import { uploadFormSchema } from '#/lib/validators';
 

@@ -82,7 +82,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
         cell: ({ row }) => {
             const tx = row.original;
             return (
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                     <span>{row.getValue('merchant')}</span>
                     <span className="text-xs text-muted-foreground">
                         {tx.counterparty ? tx.counterparty : tx.type}
@@ -116,7 +116,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
             const amt = Number(row.getValue('amount'));
 
             return (
-                <div className="flex flex-col text-right mr-4">
+                <div className="flex flex-col text-right md:mr-4">
                     <span className={getAmtCn(amt)}>{fmtAmt(amt)}</span>
                     {tx.exchangeRate ? (
                         <span className="text-xs text-muted-foreground">
@@ -136,7 +136,7 @@ export const columns: ColumnDef<DbTransaction>[] = [
             const { colorMap } = table.options.meta as { colorMap: Record<string, ValidColor> };
             const color = colorMap[row.getValue('user') as string];
             return (
-                <div className="flex flex-col items-center justify-center gap-1">
+                <div className="hidden md:flex flex-col items-center justify-center gap-1">
                     <User size={14} />
                     <Badge
                         variant="outline"

@@ -5,7 +5,7 @@ import { useSearch } from '@tanstack/react-router';
 import { format as fmtDate, endOfMonth, startOfMonth } from 'date-fns';
 import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import { useDashboardNavigate } from '#/hooks/useDashboardNavigate';
+import { useDashboardNavigate } from '#/hooks/dashboard/useDashboardNavigate';
 import type { DashboardSearch } from '#/types/transactions';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -51,7 +51,10 @@ export const DatePicker = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="justify-start px-2.5 font-normal w-full md:w-auto">
+                <Button
+                    variant="outline"
+                    className="justify-start px-2.5 font-normal w-full md:w-auto"
+                >
                     <CalendarIcon className="size-3.5" />
                     <span className="text-center w-full sm:hidden">
                         {fmtDate(from, 'LLL yy')} – {fmtDate(to, 'LLL yy')}

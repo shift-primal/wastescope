@@ -1,5 +1,5 @@
-import { useAmtBounds } from '#/hooks/useAmtBounds';
-import { useUsers } from '#/hooks/useUsers';
+import { useAmtBounds } from '#/hooks/transactions/useAmtBounds';
+import { useUsers } from '#/hooks/user/useUsers';
 import { useSearch } from '@tanstack/react-router';
 import { AmountRangeSlider } from './controls/AmountRangeSlider';
 import { CategoriesDropdown } from './controls/CategoriesDropdown';

@@ -1,5 +1,5 @@
 import type { TransactionQuery, UserStat } from '#/types/transactions';
-import { client } from '#/services/apiclient';
+import { client } from '#/lib/apiclient';
 import { useQuery } from '@tanstack/react-query';
 
 export const useUserStats = (query?: TransactionQuery, options?: { enabled?: boolean }) => {
