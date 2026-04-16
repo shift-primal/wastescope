@@ -6,8 +6,8 @@ dist-ssr
 .env
 .nitro
 .tanstack
-.wrangler
 .output
+.wrangler
 .vinxi
 __unconfig*
 todos.json
