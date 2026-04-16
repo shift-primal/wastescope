@@ -14,7 +14,8 @@ CREATE TABLE "transactions" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
+	"name" text PRIMARY KEY NOT NULL,
 	"color" "colors" NOT NULL
 );
+--> statement-breakpoint
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_user_users_name_fk" FOREIGN KEY ("user") REFERENCES "public"."users"("name") ON DELETE no action ON UPDATE cascade;
