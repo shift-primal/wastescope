@@ -11,6 +11,7 @@ import {
 import { CATEGORIES, TRANSACTION_TYPES } from "txcategorizer";
 
 export const categoryEnum = pgEnum("category", CATEGORIES);
+
 export const transactionTypeEnum = pgEnum(
 	"transaction_type",
 	TRANSACTION_TYPES,
@@ -34,3 +35,4 @@ export const transactions = pgTable(
 );
 
 export type DbTransaction = typeof transactions.$inferSelect;
+export type NewTransaction = typeof transactions.$inferInsert;

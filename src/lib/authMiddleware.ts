@@ -7,13 +7,20 @@ const BASE = import.meta.env.VITE_NEON_AUTH_URL;
 const JWKS = createRemoteJWKSet(new URL(`${BASE}/.well-known/jwks.json`));
 
 export const authMiddleware = createMiddleware({ type: "function" })
+
 	.client(async ({ next }) => {
 		const { data, error } = await authClient.token();
-		if (error || !data) throw new Error("Not authenticated");
-		return next({ headers: { Authorization: `Bearer ${data.token}` } });
+		const token =
+			data?.token ??
+			(data as unknown as { session?: { token?: string } })?.session?.token;
+		if (error || !token) throw new Error("Not authenticated");
+		return next({ headers: { Authorization: `Bearer ${token}` } });
 	})
+
 	.server(async ({ next }) => {
-		const token = getRequestHeader("authorization")?.replace("Bearer ", "");
+		const raw = getRequestHeader("authorization");
+		console.log("SERVER authorization header:", raw);
+		const token = raw?.replace("Bearer ", "");
 		if (!token) throw new Error("Unauthorized");
 		const { payload } = await jwtVerify(token, JWKS, {
 			issuer: new URL(BASE).origin,

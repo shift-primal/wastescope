@@ -3,4 +3,6 @@ import { neon } from "@neondatabase/serverless";
 import * as schema from "./schema.ts";
 
 const sql = neon(process.env.DATABASE_URL!);
+
 export const db = drizzle({ client: sql, schema });
+export type DB = typeof db;
