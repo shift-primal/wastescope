@@ -1,9 +1,3 @@
-import { db } from "#/db";
-import { transactions } from "#/db/schema";
-import {
-	type NewTransactionInput,
-	type TransactionQuery,
-} from "#/lib/schemas/validators";
 import {
 	and,
 	asc,
@@ -18,10 +12,16 @@ import {
 	max,
 	min,
 	or,
+	type SQL,
 	sql,
 	sum,
-	type SQL,
 } from "drizzle-orm";
+import { db } from "#/db";
+import { transactions } from "#/db/schema";
+import type {
+	NewTransactionInput,
+	TransactionQuery,
+} from "#/lib/schemas/validators";
 
 function buildConditions(ownerId: string, query?: TransactionQuery) {
 	const conditions: (SQL | undefined)[] = [eq(transactions.ownerId, ownerId)];

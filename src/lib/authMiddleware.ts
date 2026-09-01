@@ -1,6 +1,6 @@
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
-import { jwtVerify, createRemoteJWKSet } from "jose";
+import { createRemoteJWKSet, jwtVerify } from "jose";
 import { authClient } from "#/lib/auth";
 
 const BASE = import.meta.env.VITE_NEON_AUTH_URL;

@@ -1,12 +1,12 @@
 import {
 	date,
+	index,
 	numeric,
 	pgEnum,
 	pgTable,
 	serial,
 	text,
 	uuid,
-	index,
 } from "drizzle-orm/pg-core";
 import { CATEGORIES, TRANSACTION_TYPES } from "txcategorizer";
 
