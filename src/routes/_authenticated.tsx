@@ -1,4 +1,10 @@
+import {
+	RedirectToSignIn,
+	SignedIn,
+	SignedOut,
+} from "@neondatabase/neon-js/auth/react";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { PageContainer } from "#/components/layout/PageContainer";
 import { whoAmI } from "#/server/auth";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -12,5 +18,16 @@ export const Route = createFileRoute("/_authenticated")({
 			});
 		}
 	},
-	component: Outlet,
+	component: () => (
+		<PageContainer>
+			<div>
+				<SignedIn>
+					<Outlet />
+				</SignedIn>
+				<SignedOut>
+					<RedirectToSignIn />
+				</SignedOut>
+			</div>
+		</PageContainer>
+	),
 });
