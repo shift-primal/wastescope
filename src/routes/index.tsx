@@ -1,3 +1,4 @@
+import { SignedIn, SignedOut } from "@neondatabase/neon-js/auth/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageContainer } from "#/components/layout/PageContainer";
 import { LinkButton } from "#/components/ui/LinkButton";
@@ -11,20 +12,30 @@ const Home = () => {
 					Track and categorize your spending from imported bank transactions.
 				</p>
 				<div className="flex gap-6">
-					<LinkButton
-						to="/auth/$pathname"
-						params={{ pathname: "sign-in" }}
-						className="text-xl p-4"
-					>
-						Sign in
-					</LinkButton>
-					<LinkButton
-						to="/auth/$pathname"
-						params={{ pathname: "sign-in" }}
-						className="text-xl p-4"
-					>
-						Register
-					</LinkButton>
+					<SignedOut>
+						<LinkButton
+							to="/auth/$pathname"
+							params={{ pathname: "sign-in" }}
+							className="text-xl p-4"
+						>
+							Sign in
+						</LinkButton>
+						<LinkButton
+							to="/auth/$pathname"
+							params={{ pathname: "sign-up" }}
+							className="text-xl p-4"
+						>
+							Sign up
+						</LinkButton>
+					</SignedOut>
+					<SignedIn>
+						<LinkButton to="/dashboard" className="text-xl p-4">
+							Dashboard
+						</LinkButton>
+						<LinkButton to="/import" className="text-xl p-4">
+							Import
+						</LinkButton>
+					</SignedIn>
 				</div>
 			</div>
 		</PageContainer>

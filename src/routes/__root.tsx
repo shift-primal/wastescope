@@ -1,7 +1,4 @@
-import {
-	NeonAuthUIProvider,
-	UserButton,
-} from "@neondatabase/neon-js/auth/react";
+import { NeonAuthUIProvider } from "@neondatabase/neon-js/auth/react";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
@@ -28,9 +25,7 @@ const RootDocument = ({ children }: { children: React.ReactNode }) => {
 			<body className="overflow-hidden">
 				<NeonAuthUIProvider authClient={authClient} redirectTo="/dashboard">
 					<div className="fixed inset-0 flex flex-col">
-						<Navbar>
-							<UserButton size="icon" />
-						</Navbar>
+						<Navbar />
 						<main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
 					</div>
 				</NeonAuthUIProvider>

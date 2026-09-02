@@ -23,6 +23,7 @@ export const Route = createFileRoute("/_authenticated")({
 			<div>
 				<SignedIn>
 					<Outlet />
+					<p>logged in</p>
 				</SignedIn>
 				<SignedOut>
 					<RedirectToSignIn />
