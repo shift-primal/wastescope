@@ -1,6 +1,6 @@
 allowBuilds:
-  '@parcel/watcher': true
-  core-js: true
-  esbuild: true
+    '@parcel/watcher': true
+    core-js: true
+    esbuild: true
 minimumReleaseAgeExclude:
-  - txcategorizer@1.0.0
+    - txcategorizer@1.0.0

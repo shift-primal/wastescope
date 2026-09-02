@@ -19,7 +19,6 @@ export const authMiddleware = createMiddleware({ type: "function" })
 
 	.server(async ({ next }) => {
 		const raw = getRequestHeader("authorization");
-		console.log("SERVER authorization header:", raw);
 		const token = raw?.replace("Bearer ", "");
 		if (!token) throw new Error("Unauthorized");
 		const { payload } = await jwtVerify(token, JWKS, {

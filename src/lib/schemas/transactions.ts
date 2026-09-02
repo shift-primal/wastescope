@@ -33,9 +33,3 @@ export type TransactionQuery = z.infer<typeof transactionQuerySchema>;
 
 export type NewTransactionInput = z.infer<typeof newTransactionSchema>;
 export const importSchema = z.array(newTransactionSchema);
-
-// export const uploadFormSchema = z.object({
-// 	file: z.instanceof(File, { message: "Velg en fil" }),
-// 	bank: z.enum(["dnb", "valle"] as const),
-// 	user: z.string().min(1, "Velg en bruker"),
-// });

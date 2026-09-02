@@ -8,7 +8,10 @@ import {
 	insertTransactions,
 } from "#/db/queries";
 import { authMiddleware } from "#/lib/authMiddleware";
-import { importSchema, transactionQuerySchema } from "#/lib/schemas/validators";
+import {
+	importSchema,
+	transactionQuerySchema,
+} from "#/lib/schemas/transactions";
 
 export const fetchTransactions = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])

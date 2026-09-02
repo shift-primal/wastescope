@@ -21,7 +21,7 @@ import { transactions } from "#/db/schema";
 import type {
 	NewTransactionInput,
 	TransactionQuery,
-} from "#/lib/schemas/validators";
+} from "#/lib/schemas/transactions";
 
 function buildConditions(ownerId: string, query?: TransactionQuery) {
 	const conditions: (SQL | undefined)[] = [eq(transactions.ownerId, ownerId)];
